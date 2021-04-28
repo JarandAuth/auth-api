@@ -1,0 +1,6 @@
+# Maven build folder
+target/
+
+# IntelliJ configuration
+.idea/
+*.iml
