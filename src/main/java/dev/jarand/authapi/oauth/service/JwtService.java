@@ -11,6 +11,7 @@ import java.security.PrivateKey;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 @Service
 public class JwtService {
@@ -25,12 +26,13 @@ public class JwtService {
         this.issuer = issuer;
     }
 
-    public String createAccessToken(String clientId, Instant issuedAt, int expiresIn) {
+    public String createAccessToken(String clientId, Optional<String> scope, Instant issuedAt, int expiresIn) {
         final var encodedJwt = Jwts.builder()
                 .setSubject(clientId)
                 .setIssuer(issuer)
                 .setIssuedAt(Date.from(issuedAt))
                 .setExpiration(Date.from(issuedAt.plus(expiresIn, ChronoUnit.SECONDS)))
+                .claim("scope", scope.orElse(null))
                 .claim("type", "ACCESS")
                 .signWith(SignatureAlgorithm.RS512, privateKey)
                 .compact();
@@ -38,13 +40,14 @@ public class JwtService {
         return encodedJwt;
     }
 
-    public String createRefreshToken(String clientId, Instant issuedAt, int expiresIn, String jti) {
+    public String createRefreshToken(String clientId, Optional<String> scope, Instant issuedAt, int expiresIn, String jti) {
         final var encodedJwt = Jwts.builder()
                 .setId(jti)
                 .setSubject(clientId)
                 .setIssuer(issuer)
                 .setIssuedAt(Date.from(issuedAt))
                 .setExpiration(Date.from(issuedAt.plus(expiresIn, ChronoUnit.SECONDS)))
+                .claim("scope", scope.orElse(null))
                 .claim("type", "REFRESH")
                 .signWith(SignatureAlgorithm.RS512, privateKey)
                 .compact();

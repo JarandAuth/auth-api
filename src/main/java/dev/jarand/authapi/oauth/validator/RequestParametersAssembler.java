@@ -38,7 +38,7 @@ public class RequestParametersAssembler {
             return new RequestParameters(
                     VALID,
                     CLIENT_CREDENTIALS,
-                    new ClientCredentialsParameters(clientId, clientSecret),
+                    new ClientCredentialsParameters(clientId, clientSecret, requestParams.get("scope")),
                     null,
                     null);
         } else if ("refresh_token".equals(grantType)) {
