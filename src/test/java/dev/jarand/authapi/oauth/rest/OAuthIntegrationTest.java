@@ -1,6 +1,7 @@
 package dev.jarand.authapi.oauth.rest;
 
 import dev.jarand.authapi.ApiTestConfig;
+import dev.jarand.authapi.jarandclient.repository.JarandClientRepository;
 import dev.jarand.authapi.jaranduser.domain.JarandUser;
 import dev.jarand.authapi.jaranduser.repository.JarandUserRepository;
 import dev.jarand.authapi.token.repository.TokenRepository;
@@ -44,12 +45,15 @@ class OAuthIntegrationTest {
     private JarandUserRepository jarandUserRepository;
 
     @MockBean
+    private JarandClientRepository jarandClientRepository;
+
+    @MockBean
     private TokenRepository tokenRepository;
 
     @BeforeEach
     void setup() {
         final var user = new JarandUser(UUID.randomUUID(), "test@jarand.test", "someId", "Some client", "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2", Instant.now());
-        when(jarandUserRepository.getUser("someId")).thenReturn(Optional.of(user));
+        when(jarandUserRepository.getUserByUsername("someId")).thenReturn(Optional.of(user));
     }
 
     @Test

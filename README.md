@@ -8,7 +8,8 @@ Grant types supported:
 
 Note:
 
-- The API is currently version 0 (v0) and may get breaking changes. The version will be incremented to version 1 (v1) when the API is more stable and later breaking changes will result in a new version.
+- The API is currently version 0 (v0) and may get breaking changes. The version will be incremented to version 1 (v1) when the API is more stable and later breaking changes will result in a new
+  version.
 
 TODO:
 
@@ -19,27 +20,41 @@ TODO:
 
 # How to
 
-1. Use the scripts in the scripts-folder to "dockerize" the application with a Postgres database:
+#### 1. Use the scripts in the scripts-folder to "dockerize" the application with a Postgres database:
 
 ```bash
 bash scripts/postgres.sh
 bash scripts/buildAndRun.sh
 ```
 
-2. Create user
+#### 2. Create user
 
 ```bash
 curl --location --request POST 'http://localhost:8080/security/auth/v1/jarand-user' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "email": "example.client@jarand.dev",
-    "username": "example-client",
-    "displayName": "Example client",
+    "email": "example.user@jarand.dev",
+    "username": "ExampleUser",
+    "displayName": "ExampleUser",
     "password": "example-password"
 }'
 ```
 
-3. Get tokens using the client credentials flow
+#### 3. Create client
+
+- Replace OWNER_ID with the id you got in response from step 2
+
+```bash
+curl --location --request POST 'http://localhost:8080/security/auth/v0/jarand-client' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "clientId": "example-client",
+    "clientSecret": "example-password",
+    "ownerId": "OWNER_ID"
+}'
+```
+
+#### 4. Get tokens using the client credentials flow
 
 ```bash
 curl --location --request POST 'http://localhost:8080/security/auth/v1/oauth/token' \

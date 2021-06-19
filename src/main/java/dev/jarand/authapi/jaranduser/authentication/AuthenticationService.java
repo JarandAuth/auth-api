@@ -21,7 +21,7 @@ public class AuthenticationService {
 
     public boolean authenticate(String username, String password) {
         logger.info("Trying to authenticate user with username: {}", username);
-        final var optionalUser = jarandUserService.getUser(username);
+        final var optionalUser = jarandUserService.getUserByUsername(username);
         if (optionalUser.isEmpty()) {
             logger.info("Authentication failed (no user found) for username: {}", username);
             return false;
