@@ -1,8 +1,8 @@
 package dev.jarand.authapi.oauth.rest;
 
 import dev.jarand.authapi.ApiTestConfig;
-import dev.jarand.authapi.jarandclient.domain.JarandClient;
-import dev.jarand.authapi.jarandclient.repository.JarandClientRepository;
+import dev.jarand.authapi.jaranduser.jarandclient.domain.JarandClient;
+import dev.jarand.authapi.jaranduser.jarandclient.repository.JarandClientRepository;
 import dev.jarand.authapi.jaranduser.repository.JarandUserRepository;
 import dev.jarand.authapi.token.repository.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;

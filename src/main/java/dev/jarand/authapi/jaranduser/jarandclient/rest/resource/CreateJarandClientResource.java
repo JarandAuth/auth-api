@@ -1,15 +1,13 @@
-package dev.jarand.authapi.jarandclient.rest.resource;
+package dev.jarand.authapi.jaranduser.jarandclient.rest.resource;
 
 public class CreateJarandClientResource {
 
     private final String clientId;
     private final String clientSecret;
-    private final String ownerId;
 
-    public CreateJarandClientResource(String clientId, String clientSecret, String ownerId) {
+    public CreateJarandClientResource(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.ownerId = ownerId;
     }
 
     public String getClientId() {
@@ -18,9 +16,5 @@ public class CreateJarandClientResource {
 
     public String getClientSecret() {
         return clientSecret;
-    }
-
-    public String getOwnerId() {
-        return ownerId;
     }
 }

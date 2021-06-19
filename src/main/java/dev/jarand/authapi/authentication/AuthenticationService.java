@@ -1,6 +1,6 @@
-package dev.jarand.authapi.jaranduser.authentication;
+package dev.jarand.authapi.authentication;
 
-import dev.jarand.authapi.jarandclient.JarandClientService;
+import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,8 +1,10 @@
-package dev.jarand.authapi.jarandclient.rest.assembler;
+package dev.jarand.authapi.jaranduser.jarandclient.rest.assembler;
 
-import dev.jarand.authapi.jarandclient.domain.JarandClient;
-import dev.jarand.authapi.jarandclient.rest.resource.JarandClientResource;
+import dev.jarand.authapi.jaranduser.jarandclient.domain.JarandClient;
+import dev.jarand.authapi.jaranduser.jarandclient.rest.resource.JarandClientResource;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class JarandClientResourceAssembler {
@@ -14,5 +16,9 @@ public class JarandClientResourceAssembler {
                 jarandClient.getClientSecret(),
                 jarandClient.getOwnerId().toString(),
                 jarandClient.getTimeOfCreation().toString());
+    }
+
+    public List<JarandClientResource> assemble(List<JarandClient> jarandClients) {
+        return jarandClients.stream().map(this::assemble).toList();
     }
 }

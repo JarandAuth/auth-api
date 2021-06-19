@@ -27,7 +27,7 @@ bash scripts/postgres.sh
 bash scripts/buildAndRun.sh
 ```
 
-#### 2. Create user
+#### 2. Create user with a default client
 
 ```bash
 curl --location --request POST 'http://localhost:8080/security/auth/v0/jarand-user' \
@@ -40,25 +40,24 @@ curl --location --request POST 'http://localhost:8080/security/auth/v0/jarand-us
 }'
 ```
 
-#### 3. Create client
-
-- Replace OWNER_ID with the id you got in response from step 2
-
-```bash
-curl --location --request POST 'http://localhost:8080/security/auth/v0/jarand-client' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "clientId": "example-client",
-    "clientSecret": "example-password",
-    "ownerId": "OWNER_ID"
-}'
-```
-
-#### 4. Get tokens using the client credentials flow
+#### 3. Get tokens using the client credentials flow
 
 ```bash
 curl --location --request POST 'http://localhost:8080/security/auth/v0/oauth/token' \
 --form 'grant_type="client_credentials"' \
---form 'client_id="example-client"' \
+--form 'client_id="example.user@jarand.dev"' \
 --form 'client_secret="example-password"'
+```
+
+### Creating another client
+
+- Replace ID in the URL with the id of the user
+
+```bash
+curl --location --request POST 'http://localhost:8080/security/auth/v0/jarand-user/ID/jarand-client' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "clientId": "example-client",
+    "clientSecret": "example-password"
+}'
 ```

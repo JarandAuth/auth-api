@@ -1,6 +1,6 @@
-package dev.jarand.authapi.jarandclient.repository;
+package dev.jarand.authapi.jaranduser.jarandclient.repository;
 
-import dev.jarand.authapi.jarandclient.domain.JarandClient;
+import dev.jarand.authapi.jaranduser.jarandclient.domain.JarandClient;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,6 +31,13 @@ public class JarandClientRepository {
         } catch (IncorrectResultSizeDataAccessException ex) {
             return Optional.empty();
         }
+    }
+
+    public List<JarandClient> getClients(UUID ownerId) {
+        return jdbcTemplate.query(
+                "SELECT id, client_id, client_secret, owner_id, time_of_creation FROM jarand_client WHERE owner_id = :owner_id",
+                new MapSqlParameterSource("owner_id", ownerId),
+                this::mapRow);
     }
 
     public void createClient(JarandClient client) {

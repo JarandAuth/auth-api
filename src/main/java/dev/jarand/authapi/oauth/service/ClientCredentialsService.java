@@ -1,6 +1,6 @@
 package dev.jarand.authapi.oauth.service;
 
-import dev.jarand.authapi.jaranduser.authentication.AuthenticationService;
+import dev.jarand.authapi.authentication.AuthenticationService;
 import dev.jarand.authapi.oauth.domain.ClientCredentialsParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
 import dev.jarand.authapi.token.TokenService;
