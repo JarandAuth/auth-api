@@ -6,11 +6,16 @@ Grant types supported:
 
 - client_credentials
 
+Note:
+
+- The API is currently version 0 (v0) and may get breaking changes. The version will be incremented to version 1 (v1) when the API is more stable and later breaking changes will result in a new version.
+
 TODO:
 
-- Finish the refresh token flow
-- Add scope parameter
-- Proper error messages for authentication failure
+- Finish the refresh token flow ([Issue #1](https://github.com/JarandAuth/auth-api/issues/1))
+- Add scope parameter ([Issue #2](https://github.com/JarandAuth/auth-api/issues/2))
+- Proper error messages for authentication failure ([Issue #3](https://github.com/JarandAuth/auth-api/issues/3))
+- Support multiple clients per user ([Issue #4](https://github.com/JarandAuth/auth-api/issues/4))
 
 # How to
 
