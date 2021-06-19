@@ -38,7 +38,7 @@ public class ClientCredentialsService {
         final var clientSecret = parameters.getClientSecret();
         logger.info("Performing client credentials flow for clientId: {}", clientId);
         if (!authenticationService.authenticate(clientId, clientSecret)) {
-            logger.info("Cancelling client credentials flow (authentication failed) clientId: {}", clientId);
+            logger.info("Cancelling client credentials flow (authentication failed) for clientId: {}", clientId);
             return Optional.empty();
         }
         final var optionalScope = parameters.getScope().map(scopeParam -> {
@@ -49,9 +49,13 @@ public class ClientCredentialsService {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .toList();
-            if (scopeParams.size() != scopeConnections.size()) {
+            final var scopesRequested = scopeParams.size();
+            final var scopeConnectionsSize = scopeConnections.size();
+            if (scopesRequested != scopeConnectionsSize) {
+                logger.info("Mismatch between scopes requested ({}) and scopes connected to client ({}) for clientId: {}", scopesRequested, scopeConnectionsSize, clientId);
                 return null;
             }
+            logger.info("Validated {} scopes requested for clientId: {}", scopeConnectionsSize, clientId);
             return scopeParam;
         });
         final var optionalTokens = tokenService.createTokens(clientId, optionalScope);
