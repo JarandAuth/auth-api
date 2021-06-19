@@ -30,7 +30,7 @@ bash scripts/buildAndRun.sh
 #### 2. Create user
 
 ```bash
-curl --location --request POST 'http://localhost:8080/security/auth/v1/jarand-user' \
+curl --location --request POST 'http://localhost:8080/security/auth/v0/jarand-user' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "email": "example.user@jarand.dev",
@@ -57,7 +57,7 @@ curl --location --request POST 'http://localhost:8080/security/auth/v0/jarand-cl
 #### 4. Get tokens using the client credentials flow
 
 ```bash
-curl --location --request POST 'http://localhost:8080/security/auth/v1/oauth/token' \
+curl --location --request POST 'http://localhost:8080/security/auth/v0/oauth/token' \
 --form 'grant_type="client_credentials"' \
 --form 'client_id="example-client"' \
 --form 'client_secret="example-password"'
