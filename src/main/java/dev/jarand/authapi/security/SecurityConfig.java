@@ -15,6 +15,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .mvcMatchers(HttpMethod.POST, "/jarand-user") // TODO: For testing purposes only.
                 .mvcMatchers(HttpMethod.POST, "/jarand-user/{id}/jarand-client") // TODO: For testing purposes only.
+                .mvcMatchers(HttpMethod.POST, "/scope") // TODO: For testing purposes only.
+                .mvcMatchers(HttpMethod.GET, "/scope") // TODO: For testing purposes only.
+                .mvcMatchers(HttpMethod.POST, "/scope/{id}/connection") // TODO: For testing purposes only.
                 .mvcMatchers(HttpMethod.GET, "/key/public")
                 .mvcMatchers(HttpMethod.POST, "/oauth/token");
     }

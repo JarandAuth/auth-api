@@ -39,12 +39,12 @@ public class TokenService {
         this.refreshTokenExpiresIn = refreshTokenExpiresIn;
     }
 
-    public Optional<Tokens> createTokens(String clientId) {
+    public Optional<Tokens> createTokens(String clientId, Optional<String> scope) {
         logger.info("Creating tokens for clientId: {}", clientId);
         final var issuedAt = instantSupplier.get();
         final var refreshTokenJti = uuidSupplier.get().toString();
-        final var accessToken = jwtService.createAccessToken(clientId, issuedAt, accessTokenExpiresIn);
-        final var refreshToken = jwtService.createRefreshToken(clientId, issuedAt, refreshTokenExpiresIn, refreshTokenJti);
+        final var accessToken = jwtService.createAccessToken(clientId, scope, issuedAt, accessTokenExpiresIn);
+        final var refreshToken = jwtService.createRefreshToken(clientId, scope, issuedAt, refreshTokenExpiresIn, refreshTokenJti);
         tokenRepository.saveRefreshToken(refreshTokenJti, clientId, issuedAt);
         logger.info("Saved refresh token jti: {} with issuedAt: {} for clientId: {}", refreshTokenJti, issuedAt, clientId);
         logger.info("Successfully created tokens for clientId: {}", clientId);
