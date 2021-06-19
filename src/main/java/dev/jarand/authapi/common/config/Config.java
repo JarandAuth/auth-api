@@ -1,4 +1,4 @@
-package dev.jarand.authapi.config;
+package dev.jarand.authapi.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

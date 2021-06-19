@@ -17,6 +17,20 @@ CREATE TABLE jarand_client
     time_of_creation VARCHAR NOT NULL
 );
 
+CREATE TABLE scope
+(
+    id               VARCHAR NOT NULL UNIQUE,
+    description      VARCHAR NOT NULL,
+    time_of_creation VARCHAR NOT NULL
+);
+
+CREATE TABLE scope_connection
+(
+    scope_id         VARCHAR NOT NULL REFERENCES scope (id),
+    jarand_client_id UUID    NOT NULL REFERENCES jarand_client (id),
+    PRIMARY KEY (scope_id, jarand_client_id)
+);
+
 CREATE TABLE refresh_token
 (
     jti       VARCHAR NOT NULL,
