@@ -19,7 +19,7 @@ TODO:
 
 # How to
 
-1. Use the scripts in the scripts-folder to run the application with a Postgres database:
+1. Use the scripts in the scripts-folder to "dockerize" the application with a Postgres database:
 
 ```bash
 bash scripts/postgres.sh
