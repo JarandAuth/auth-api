@@ -1,0 +1,4 @@
+{
+  "error": "unsupported_grant_type",
+  "error_description": "The specified grant type is not supported, 'client_credentials' or 'refresh_token' expected"
+}
