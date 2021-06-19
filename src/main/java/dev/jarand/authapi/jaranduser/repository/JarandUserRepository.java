@@ -21,7 +21,18 @@ public class JarandUserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Optional<JarandUser> getUser(String username) {
+    public Optional<JarandUser> getUser(UUID id) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(
+                    "SELECT id, email, username, display_name, password, time_of_creation FROM jarand_user WHERE id = :id",
+                    new MapSqlParameterSource("id", id),
+                    this::mapRow));
+        } catch (IncorrectResultSizeDataAccessException ex) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<JarandUser> getUserByUsername(String username) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                     "SELECT id, email, username, display_name, password, time_of_creation FROM jarand_user WHERE username = :username",

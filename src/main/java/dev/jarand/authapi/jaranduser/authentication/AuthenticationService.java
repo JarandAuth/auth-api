@@ -1,6 +1,6 @@
 package dev.jarand.authapi.jaranduser.authentication;
 
-import dev.jarand.authapi.jaranduser.JarandUserService;
+import dev.jarand.authapi.jarandclient.JarandClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,27 +11,27 @@ public class AuthenticationService {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
-    private final JarandUserService jarandUserService;
+    private final JarandClientService jarandClientService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationService(JarandUserService jarandUserService, PasswordEncoder passwordEncoder) {
-        this.jarandUserService = jarandUserService;
+    public AuthenticationService(JarandClientService jarandClientService, PasswordEncoder passwordEncoder) {
+        this.jarandClientService = jarandClientService;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean authenticate(String username, String password) {
-        logger.info("Trying to authenticate user with username: {}", username);
-        final var optionalUser = jarandUserService.getUser(username);
-        if (optionalUser.isEmpty()) {
-            logger.info("Authentication failed (no user found) for username: {}", username);
+    public boolean authenticate(String clientId, String clientSecret) {
+        logger.info("Trying to authenticate client with clientId: {}", clientId);
+        final var optionalClient = jarandClientService.getClientByClientId(clientId);
+        if (optionalClient.isEmpty()) {
+            logger.info("Authentication failed (no client found) for clientId: {}", clientId);
             return false;
         }
-        final var user = optionalUser.get();
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            logger.info("Authentication failed (invalid password) for username: {}", username);
+        final var client = optionalClient.get();
+        if (!passwordEncoder.matches(clientSecret, client.getClientSecret())) {
+            logger.info("Authentication failed (invalid client secret) for clientId: {}", clientId);
             return false;
         }
-        logger.info("Authentication successful for username: {}", username);
+        logger.info("Authentication successful for clientId: {}", clientId);
         return true;
     }
 }

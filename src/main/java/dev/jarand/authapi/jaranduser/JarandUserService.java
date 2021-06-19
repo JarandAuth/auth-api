@@ -5,6 +5,7 @@ import dev.jarand.authapi.jaranduser.repository.JarandUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class JarandUserService {
@@ -15,8 +16,12 @@ public class JarandUserService {
         this.repository = repository;
     }
 
-    public Optional<JarandUser> getUser(String username) {
-        return repository.getUser(username);
+    public Optional<JarandUser> getUser(UUID id) {
+        return repository.getUser(id);
+    }
+
+    public Optional<JarandUser> getUserByUsername(String username) {
+        return repository.getUserByUsername(username);
     }
 
     public void createUser(JarandUser jarandUser) {
