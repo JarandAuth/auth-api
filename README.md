@@ -14,7 +14,6 @@ Note:
 TODO:
 
 - Finish the refresh token flow ([Issue #1](https://github.com/JarandAuth/auth-api/issues/1))
-- Add scope parameter ([Issue #2](https://github.com/JarandAuth/auth-api/issues/2))
 - Proper error messages for authentication failure ([Issue #3](https://github.com/JarandAuth/auth-api/issues/3))
 - Protect internal endpoints ([Issue #5](https://github.com/JarandAuth/auth-api/issues/5))
 
@@ -59,5 +58,30 @@ curl --location --request POST 'http://localhost:8080/security/auth/v0/jarand-us
 --data-raw '{
     "clientId": "example-client",
     "clientSecret": "example-password"
+}'
+```
+
+### Create and connect scope to a client
+
+#### 1. Create scope
+
+```bash
+curl --location --request POST 'http://localhost:8080/security/auth/v0/scope' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "id": "World.Admin",
+    "description": "Rule the world"
+}'
+```
+
+#### 2. Connect the scope to a client
+
+- Replace ID in the payload with the id of the client
+
+```bash
+curl --location --request POST 'http://localhost:8080/security/auth/v0/scope/World.Admin/connection' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "jarandClientId": "ID"
 }'
 ```
