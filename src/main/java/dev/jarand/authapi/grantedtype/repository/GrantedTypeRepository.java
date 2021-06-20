@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class GrantedTypeRepository {
@@ -28,13 +27,13 @@ public class GrantedTypeRepository {
                         .addValue("jarand_client_id", grantedType.getJarandClientId()));
     }
 
-    public List<GrantedType> get(UUID jarandClientId) {
+    public List<GrantedType> get(String jarandClientId) {
         return jdbcTemplate.query("SELECT grant_type, jarand_client_id FROM granted_type WHERE jarand_client_id = :jarand_client_id",
                 new MapSqlParameterSource().addValue("jarand_client_id", jarandClientId),
                 this::mapRow);
     }
 
-    public Optional<GrantedType> get(String grantType, UUID jarandClientId) {
+    public Optional<GrantedType> get(String grantType, String jarandClientId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                     "SELECT grant_type, jarand_client_id FROM granted_type WHERE grant_type = :grant_type AND jarand_client_id = :jarand_client_id",
@@ -48,6 +47,6 @@ public class GrantedTypeRepository {
     }
 
     private GrantedType mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-        return new GrantedType(resultSet.getString("grant_type"), UUID.fromString(resultSet.getString("jarand_client_id")));
+        return new GrantedType(resultSet.getString("grant_type"), resultSet.getString("jarand_client_id"));
     }
 }

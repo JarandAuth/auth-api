@@ -9,8 +9,7 @@ CREATE TABLE jarand_user
 
 CREATE TABLE jarand_client
 (
-    id               UUID PRIMARY KEY,
-    client_id        VARCHAR NOT NULL UNIQUE,
+    client_id        VARCHAR PRIMARY KEY,
     client_secret    VARCHAR NOT NULL UNIQUE,
     owner_id         UUID    NOT NULL REFERENCES jarand_user (id),
     time_of_creation VARCHAR NOT NULL
@@ -30,7 +29,7 @@ VALUES ('refresh_token', (now() AT TIME ZONE 'UTC'));
 CREATE TABLE granted_type
 (
     grant_type       VARCHAR NOT NULL REFERENCES grant_type (grant_type),
-    jarand_client_id UUID    NOT NULL REFERENCES jarand_client (id),
+    jarand_client_id VARCHAR NOT NULL REFERENCES jarand_client (client_id),
     PRIMARY KEY (grant_type, jarand_client_id)
 );
 
@@ -44,7 +43,7 @@ CREATE TABLE scope
 CREATE TABLE scope_connection
 (
     scope_id         VARCHAR NOT NULL REFERENCES scope (id),
-    jarand_client_id UUID    NOT NULL REFERENCES jarand_client (id),
+    jarand_client_id VARCHAR NOT NULL REFERENCES jarand_client (client_id),
     PRIMARY KEY (scope_id, jarand_client_id)
 );
 

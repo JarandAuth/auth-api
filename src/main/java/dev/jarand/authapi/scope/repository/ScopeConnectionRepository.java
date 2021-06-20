@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class ScopeConnectionRepository {
@@ -27,7 +26,7 @@ public class ScopeConnectionRepository {
                         .addValue("jarand_client_id", scopeConnection.getJarandClientId()));
     }
 
-    public Optional<ScopeConnection> get(String scopeId, UUID jarandClientId) {
+    public Optional<ScopeConnection> get(String scopeId, String jarandClientId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                     "SELECT scope_id, jarand_client_id FROM scope_connection WHERE scope_id = :scope_id AND jarand_client_id = :jarand_client_id",
@@ -39,6 +38,6 @@ public class ScopeConnectionRepository {
     }
 
     private ScopeConnection mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-        return new ScopeConnection(resultSet.getString("scope_id"), UUID.fromString(resultSet.getString("jarand_client_id")));
+        return new ScopeConnection(resultSet.getString("scope_id"), resultSet.getString("jarand_client_id"));
     }
 }

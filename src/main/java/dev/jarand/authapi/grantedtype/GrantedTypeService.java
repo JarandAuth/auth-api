@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class GrantedTypeService {
@@ -21,11 +20,11 @@ public class GrantedTypeService {
         repository.create(grantedType);
     }
 
-    public List<GrantedType> get(UUID jarandClientId) {
+    public List<GrantedType> get(String jarandClientId) {
         return repository.get(jarandClientId);
     }
 
-    public Optional<GrantedType> get(String grantType, UUID jarandClientId) {
+    public Optional<GrantedType> get(String grantType, String jarandClientId) {
         return repository.get(grantType, jarandClientId);
     }
 }

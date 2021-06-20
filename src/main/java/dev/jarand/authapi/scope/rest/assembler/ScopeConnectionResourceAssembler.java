@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public class ScopeConnectionResourceAssembler {
 
     public ScopeConnectionResource assemble(ScopeConnection scopeConnection) {
-        return new ScopeConnectionResource(scopeConnection.getScopeId(), scopeConnection.getJarandClientId().toString());
+        return new ScopeConnectionResource(scopeConnection.getScopeId(), scopeConnection.getJarandClientId());
     }
 }

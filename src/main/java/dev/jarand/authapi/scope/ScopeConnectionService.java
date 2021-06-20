@@ -5,7 +5,6 @@ import dev.jarand.authapi.scope.repository.ScopeConnectionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ScopeConnectionService {
@@ -20,7 +19,7 @@ public class ScopeConnectionService {
         repository.create(scopeConnection);
     }
 
-    public Optional<ScopeConnection> get(String scopeId, UUID jarandClientId) {
+    public Optional<ScopeConnection> get(String scopeId, String jarandClientId) {
         return repository.get(scopeId, jarandClientId);
     }
 }

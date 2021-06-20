@@ -48,8 +48,8 @@ public class RefreshTokenService {
             logger.info("Cancelling refresh token flow (authentication failed) for clientId: {}", clientId);
             return Optional.empty();
         }
-        final var jarandUserClient = jarandClientService.getClientByClientId(clientId).orElseThrow();
-        if (grantedTypeService.get("refresh_token", jarandUserClient.getId()).isEmpty()) {
+        final var jarandUserClient = jarandClientService.getClient(clientId).orElseThrow();
+        if (grantedTypeService.get("refresh_token", jarandUserClient.getClientId()).isEmpty()) {
             logger.info("Cancelling refresh token flow (unauthorized client) for clientId: {}", clientId);
             return Optional.empty();
         }
@@ -70,7 +70,7 @@ public class RefreshTokenService {
         final var optionalScope = refreshTokenClaims.getScope().map(scopeParam -> {
             final var scopeParams = Arrays.asList(scopeParam.split(" "));
             final var scopeConnections = scopeParams.stream()
-                    .map(scope -> scopeConnectionService.get(scope, jarandUserClient.getId()))
+                    .map(scope -> scopeConnectionService.get(scope, jarandUserClient.getClientId()))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .toList();

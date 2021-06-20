@@ -1,13 +1,11 @@
 package dev.jarand.authapi.scope.domain;
 
-import java.util.UUID;
-
 public class ScopeConnection {
 
     private final String scopeId;
-    private final UUID jarandClientId;
+    private final String jarandClientId;
 
-    public ScopeConnection(String scopeId, UUID jarandClientId) {
+    public ScopeConnection(String scopeId, String jarandClientId) {
         this.scopeId = scopeId;
         this.jarandClientId = jarandClientId;
     }
@@ -16,7 +14,7 @@ public class ScopeConnection {
         return scopeId;
     }
 
-    public UUID getJarandClientId() {
+    public String getJarandClientId() {
         return jarandClientId;
     }
 }

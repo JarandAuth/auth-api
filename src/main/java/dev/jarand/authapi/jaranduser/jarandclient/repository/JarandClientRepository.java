@@ -22,10 +22,10 @@ public class JarandClientRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Optional<JarandClient> getClientByClientId(String clientId) {
+    public Optional<JarandClient> getClient(String clientId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT id, client_id, client_secret, owner_id, time_of_creation FROM jarand_client WHERE client_id = :client_id",
+                    "SELECT client_id, client_secret, owner_id, time_of_creation FROM jarand_client WHERE client_id = :client_id",
                     new MapSqlParameterSource("client_id", clientId),
                     this::mapRow));
         } catch (IncorrectResultSizeDataAccessException ex) {
@@ -35,16 +35,15 @@ public class JarandClientRepository {
 
     public List<JarandClient> getClients(UUID ownerId) {
         return jdbcTemplate.query(
-                "SELECT id, client_id, client_secret, owner_id, time_of_creation FROM jarand_client WHERE owner_id = :owner_id",
+                "SELECT client_id, client_secret, owner_id, time_of_creation FROM jarand_client WHERE owner_id = :owner_id",
                 new MapSqlParameterSource("owner_id", ownerId),
                 this::mapRow);
     }
 
     public void createClient(JarandClient client) {
-        jdbcTemplate.update("INSERT INTO jarand_client(id, client_id, client_secret, owner_id, time_of_creation) " +
-                        "VALUES (:id, :client_id, :client_secret, :owner_id, :time_of_creation)",
+        jdbcTemplate.update("INSERT INTO jarand_client(client_id, client_secret, owner_id, time_of_creation) " +
+                        "VALUES (:client_id, :client_secret, :owner_id, :time_of_creation)",
                 new MapSqlParameterSource()
-                        .addValue("id", client.getId())
                         .addValue("client_id", client.getClientId())
                         .addValue("client_secret", client.getClientSecret())
                         .addValue("owner_id", client.getOwnerId())
@@ -53,7 +52,6 @@ public class JarandClientRepository {
 
     private JarandClient mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         return new JarandClient(
-                UUID.fromString(resultSet.getString("id")),
                 resultSet.getString("client_id"),
                 resultSet.getString("client_secret"),
                 UUID.fromString(resultSet.getString("owner_id")),
