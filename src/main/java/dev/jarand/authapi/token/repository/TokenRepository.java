@@ -23,4 +23,9 @@ public class TokenRepository {
                         .addValue("subject", subject)
                         .addValue("issued_at", issuedAt.toString()));
     }
+
+    public boolean exists(String jti) {
+        final var count = jdbcTemplate.queryForObject("SELECT count(jti) FROM refresh_token WHERE jti = :jti", new MapSqlParameterSource("jti", jti), Integer.class);
+        return count != null && count == 1;
+    }
 }

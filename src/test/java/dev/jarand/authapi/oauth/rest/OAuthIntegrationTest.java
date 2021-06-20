@@ -2,6 +2,7 @@ package dev.jarand.authapi.oauth.rest;
 
 import dev.jarand.authapi.ApiTest;
 import dev.jarand.authapi.jaranduser.jarandclient.domain.JarandClient;
+import dev.jarand.authapi.oauth.rest.resource.TokenResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 import static dev.jarand.authapi.FileUtil.fileAsString;
 import static dev.jarand.authapi.JsonMatcherUtil.isPresent;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,6 +43,34 @@ class OAuthIntegrationTest extends ApiTest {
                 expectedJson,
                 actualJson,
                 new CustomComparator(JSONCompareMode.STRICT, isPresent("access_token"), isPresent("refresh_token")));
+    }
+
+    @Test
+    void POST_token_for_refresh_token_flow_should_return_tokens() throws Exception {
+        final var clientCredentialsResult = mockMvc.perform(
+                post("/oauth/token")
+                        .param("grant_type", "client_credentials")
+                        .param("client_id", "someId")
+                        .param("client_secret", "someSecret"))
+                .andExpect(status().isOk()).andReturn();
+        final var clientCredentialsResource = objectMapper.readValue(clientCredentialsResult.getResponse().getContentAsString(), TokenResource.class);
+        final var refreshToken = clientCredentialsResource.getRefreshToken();
+        when(tokenRepository.exists(any())).thenReturn(true);
+
+        final var mvcResult = mockMvc.perform(
+                post("/oauth/token")
+                        .param("grant_type", "refresh_token")
+                        .param("client_id", "someId")
+                        .param("client_secret", "someSecret")
+                        .param("refresh_token", refreshToken))
+                .andExpect(status().isOk()).andReturn();
+
+        final var actualJson = mvcResult.getResponse().getContentAsString();
+        final var expectedJson = fileAsString("/token/refresh-token/token.json");
+        JSONAssert.assertEquals(
+                expectedJson,
+                actualJson,
+                new CustomComparator(JSONCompareMode.STRICT, isPresent("access_token")));
     }
 
     @Test
