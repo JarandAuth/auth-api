@@ -3,18 +3,18 @@ package dev.jarand.authapi.grantedtype.domain;
 public class GrantedType {
 
     private final String grantType;
-    private final String jarandClientId;
+    private final String clientId;
 
-    public GrantedType(String grantType, String jarandClientId) {
+    public GrantedType(String grantType, String clientId) {
         this.grantType = grantType;
-        this.jarandClientId = jarandClientId;
+        this.clientId = clientId;
     }
 
     public String getGrantType() {
         return grantType;
     }
 
-    public String getJarandClientId() {
-        return jarandClientId;
+    public String getClientId() {
+        return clientId;
     }
 }

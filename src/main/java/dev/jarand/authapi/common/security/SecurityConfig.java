@@ -1,4 +1,4 @@
-package dev.jarand.authapi.security;
+package dev.jarand.authapi.common.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

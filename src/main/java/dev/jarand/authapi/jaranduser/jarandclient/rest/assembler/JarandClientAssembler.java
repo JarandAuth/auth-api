@@ -13,10 +13,12 @@ import java.util.function.Supplier;
 @Component
 public class JarandClientAssembler {
 
+    private final Supplier<UUID> uuidSupplier;
     private final Supplier<Instant> instantSupplier;
     private final PasswordEncoder passwordEncoder;
 
-    public JarandClientAssembler(Supplier<Instant> instantSupplier, PasswordEncoder passwordEncoder) {
+    public JarandClientAssembler(Supplier<UUID> uuidSupplier, Supplier<Instant> instantSupplier, PasswordEncoder passwordEncoder) {
+        this.uuidSupplier = uuidSupplier;
         this.instantSupplier = instantSupplier;
         this.passwordEncoder = passwordEncoder;
     }
@@ -31,7 +33,7 @@ public class JarandClientAssembler {
 
     public JarandClient assembleNew(JarandUser jarandUser, String password) {
         return new JarandClient(
-                jarandUser.getEmail(),
+                uuidSupplier.get().toString(),
                 passwordEncoder.encode(password),
                 jarandUser.getId(),
                 jarandUser.getTimeOfCreation());
