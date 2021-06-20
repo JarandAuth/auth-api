@@ -1,6 +1,7 @@
 package dev.jarand.authapi.oauth.rest;
 
 import dev.jarand.authapi.ApiTest;
+import dev.jarand.authapi.grantedtype.domain.GrantedType;
 import dev.jarand.authapi.jaranduser.jarandclient.domain.JarandClient;
 import dev.jarand.authapi.oauth.rest.resource.TokenResource;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import static dev.jarand.authapi.FileUtil.fileAsString;
 import static dev.jarand.authapi.JsonMatcherUtil.isPresent;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,6 +28,7 @@ class OAuthIntegrationTest extends ApiTest {
     void setup() {
         final var client = new JarandClient(UUID.randomUUID(), "someId", "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2", UUID.randomUUID(), Instant.now());
         when(jarandClientRepository.getClientByClientId("someId")).thenReturn(Optional.of(client));
+        when(grantedTypeRepository.get(any(), any())).thenReturn(Optional.of(mock(GrantedType.class)));
     }
 
     @Test

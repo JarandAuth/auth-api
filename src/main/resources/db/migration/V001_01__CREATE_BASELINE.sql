@@ -17,9 +17,27 @@ CREATE TABLE jarand_client
     time_of_creation VARCHAR NOT NULL
 );
 
+CREATE TABLE grant_type
+(
+    grant_type       VARCHAR PRIMARY KEY,
+    time_of_creation VARCHAR NOT NULL
+);
+
+INSERT INTO grant_type(grant_type, time_of_creation)
+VALUES ('client_credentials', (now() AT TIME ZONE 'UTC'));
+INSERT INTO grant_type(grant_type, time_of_creation)
+VALUES ('refresh_token', (now() AT TIME ZONE 'UTC'));
+
+CREATE TABLE granted_type
+(
+    grant_type       VARCHAR NOT NULL REFERENCES grant_type (grant_type),
+    jarand_client_id UUID    NOT NULL REFERENCES jarand_client (id),
+    PRIMARY KEY (grant_type, jarand_client_id)
+);
+
 CREATE TABLE scope
 (
-    id               VARCHAR NOT NULL UNIQUE,
+    id               VARCHAR PRIMARY KEY,
     description      VARCHAR NOT NULL,
     time_of_creation VARCHAR NOT NULL
 );

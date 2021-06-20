@@ -1,6 +1,7 @@
 package dev.jarand.authapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.jarand.authapi.grantedtype.repository.GrantedTypeRepository;
 import dev.jarand.authapi.jaranduser.jarandclient.repository.JarandClientRepository;
 import dev.jarand.authapi.jaranduser.repository.JarandUserRepository;
 import dev.jarand.authapi.scope.repository.ScopeConnectionRepository;
@@ -44,4 +45,7 @@ public class ApiTest {
 
     @MockBean
     protected ScopeConnectionRepository scopeConnectionRepository;
+
+    @MockBean
+    protected GrantedTypeRepository grantedTypeRepository;
 }

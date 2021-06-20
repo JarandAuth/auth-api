@@ -1,6 +1,7 @@
 package dev.jarand.authapi.oauth.service;
 
 import dev.jarand.authapi.authentication.AuthenticationService;
+import dev.jarand.authapi.grantedtype.GrantedTypeService;
 import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
 import dev.jarand.authapi.oauth.domain.ClientCredentialsParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
@@ -19,15 +20,18 @@ public class ClientCredentialsService {
     private static final Logger logger = LoggerFactory.getLogger(ClientCredentialsService.class);
 
     private final AuthenticationService authenticationService;
+    private final GrantedTypeService grantedTypeService;
     private final TokenService tokenService;
     private final JarandClientService jarandClientService;
     private final ScopeConnectionService scopeConnectionService;
 
     public ClientCredentialsService(AuthenticationService authenticationService,
+                                    GrantedTypeService grantedTypeService,
                                     TokenService tokenService,
                                     JarandClientService jarandClientService,
                                     ScopeConnectionService scopeConnectionService) {
         this.authenticationService = authenticationService;
+        this.grantedTypeService = grantedTypeService;
         this.tokenService = tokenService;
         this.jarandClientService = jarandClientService;
         this.scopeConnectionService = scopeConnectionService;
@@ -41,9 +45,13 @@ public class ClientCredentialsService {
             logger.info("Cancelling client credentials flow (authentication failed) for clientId: {}", clientId);
             return Optional.empty();
         }
+        final var jarandUserClient = jarandClientService.getClientByClientId(clientId).orElseThrow();
+        if (grantedTypeService.get("client_credentials", jarandUserClient.getId()).isEmpty()) {
+            logger.info("Cancelling client credentials flow (unauthorized client) for clientId: {}", clientId);
+            return Optional.empty();
+        }
         final var optionalScope = parameters.getScope().map(scopeParam -> {
             final var scopeParams = Arrays.asList(scopeParam.split(" "));
-            final var jarandUserClient = jarandClientService.getClientByClientId(clientId).orElseThrow();
             final var scopeConnections = scopeParams.stream()
                     .map(scope -> scopeConnectionService.get(scope, jarandUserClient.getId()))
                     .filter(Optional::isPresent)

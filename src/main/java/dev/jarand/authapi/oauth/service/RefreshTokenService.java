@@ -1,6 +1,7 @@
 package dev.jarand.authapi.oauth.service;
 
 import dev.jarand.authapi.authentication.AuthenticationService;
+import dev.jarand.authapi.grantedtype.GrantedTypeService;
 import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
 import dev.jarand.authapi.oauth.domain.RefreshTokenParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
@@ -19,17 +20,20 @@ public class RefreshTokenService {
     private static final Logger logger = LoggerFactory.getLogger(RefreshTokenService.class);
 
     private final AuthenticationService authenticationService;
+    private final GrantedTypeService grantedTypeService;
     private final JarandClientService jarandClientService;
     private final ScopeConnectionService scopeConnectionService;
     private final TokenService tokenService;
     private final JwtService jwtService;
 
     public RefreshTokenService(AuthenticationService authenticationService,
+                               GrantedTypeService grantedTypeService,
                                JarandClientService jarandClientService,
                                ScopeConnectionService scopeConnectionService,
                                TokenService tokenService,
                                JwtService jwtService) {
         this.authenticationService = authenticationService;
+        this.grantedTypeService = grantedTypeService;
         this.jarandClientService = jarandClientService;
         this.scopeConnectionService = scopeConnectionService;
         this.tokenService = tokenService;
@@ -42,6 +46,11 @@ public class RefreshTokenService {
         logger.info("Performing refresh token flow for clientId: {}", clientId);
         if (!authenticationService.authenticate(clientId, clientSecret)) {
             logger.info("Cancelling refresh token flow (authentication failed) for clientId: {}", clientId);
+            return Optional.empty();
+        }
+        final var jarandUserClient = jarandClientService.getClientByClientId(clientId).orElseThrow();
+        if (grantedTypeService.get("refresh_token", jarandUserClient.getId()).isEmpty()) {
+            logger.info("Cancelling refresh token flow (unauthorized client) for clientId: {}", clientId);
             return Optional.empty();
         }
         final var optionalRefreshTokenClaims = jwtService.parseRefreshToken(parameters.getRefreshToken());
@@ -60,7 +69,6 @@ public class RefreshTokenService {
         }
         final var optionalScope = refreshTokenClaims.getScope().map(scopeParam -> {
             final var scopeParams = Arrays.asList(scopeParam.split(" "));
-            final var jarandUserClient = jarandClientService.getClientByClientId(clientId).orElseThrow();
             final var scopeConnections = scopeParams.stream()
                     .map(scope -> scopeConnectionService.get(scope, jarandUserClient.getId()))
                     .filter(Optional::isPresent)
