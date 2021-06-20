@@ -12,12 +12,21 @@ Note:
 - The API is currently version 0 (v0) and may get breaking changes. The version will be incremented to version 1 (v1) when the API is more stable and later breaking changes will result in a new
   version.
 
-TODO:
+## Upcoming changes
 
-- Proper error messages for authentication failure ([Issue #3](https://github.com/JarandAuth/auth-api/issues/3))
-- Protect internal endpoints ([Issue #5](https://github.com/JarandAuth/auth-api/issues/5))
+See [GitHub Issues](https://github.com/JarandAuth/auth-api/issues)
 
-# How to
+## Contributing
+
+### Feature requests
+
+The project does not currently accept new feature requests.
+
+### Bugs
+
+Noticed something which is not working as expected? Please open a bug report: [Create bug report](https://github.com/JarandAuth/auth-api/issues/new?assignees=&labels=bug&template=bug_report.md&title=)
+
+## How to
 
 #### 1. Use the scripts in the scripts-folder to "dockerize" the application with a Postgres database:
 
