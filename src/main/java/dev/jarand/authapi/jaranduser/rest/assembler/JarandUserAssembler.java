@@ -2,7 +2,6 @@ package dev.jarand.authapi.jaranduser.rest.assembler;
 
 import dev.jarand.authapi.jaranduser.domain.JarandUser;
 import dev.jarand.authapi.jaranduser.rest.resource.CreateJarandUserResource;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -14,12 +13,10 @@ public class JarandUserAssembler {
 
     private final Supplier<UUID> uuidSupplier;
     private final Supplier<Instant> instantSupplier;
-    private final PasswordEncoder passwordEncoder;
 
-    public JarandUserAssembler(Supplier<UUID> uuidSupplier, Supplier<Instant> instantSupplier, PasswordEncoder passwordEncoder) {
+    public JarandUserAssembler(Supplier<UUID> uuidSupplier, Supplier<Instant> instantSupplier) {
         this.uuidSupplier = uuidSupplier;
         this.instantSupplier = instantSupplier;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public JarandUser assembleNew(CreateJarandUserResource resource) {
@@ -28,7 +25,6 @@ public class JarandUserAssembler {
                 resource.getEmail(),
                 resource.getUsername(),
                 resource.getDisplayName(),
-                passwordEncoder.encode(resource.getPassword()),
                 instantSupplier.get());
     }
 }

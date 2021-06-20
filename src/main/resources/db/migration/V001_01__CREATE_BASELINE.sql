@@ -4,7 +4,6 @@ CREATE TABLE jarand_user
     email            VARCHAR NOT NULL UNIQUE,
     username         VARCHAR NOT NULL UNIQUE,
     display_name     VARCHAR NOT NULL UNIQUE,
-    password         VARCHAR NOT NULL,
     time_of_creation VARCHAR NOT NULL
 );
 

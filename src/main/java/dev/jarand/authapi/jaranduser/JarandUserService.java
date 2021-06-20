@@ -26,12 +26,8 @@ public class JarandUserService {
         return repository.getUser(id);
     }
 
-    public Optional<JarandUser> getUserByUsername(String username) {
-        return repository.getUserByUsername(username);
-    }
-
-    public void createUser(JarandUser user) {
-        final var client = jarandClientAssembler.assembleNew(user);
+    public void createUser(JarandUser user, String password) {
+        final var client = jarandClientAssembler.assembleNew(user, password);
         repository.createUser(user);
         jarandClientService.createClient(client);
     }

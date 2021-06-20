@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,6 +26,12 @@ public class GrantedTypeRepository {
                 new MapSqlParameterSource()
                         .addValue("grant_type", grantedType.getGrantType())
                         .addValue("jarand_client_id", grantedType.getJarandClientId()));
+    }
+
+    public List<GrantedType> get(UUID jarandClientId) {
+        return jdbcTemplate.query("SELECT grant_type, jarand_client_id FROM granted_type WHERE jarand_client_id = :jarand_client_id",
+                new MapSqlParameterSource().addValue("jarand_client_id", jarandClientId),
+                this::mapRow);
     }
 
     public Optional<GrantedType> get(String grantType, UUID jarandClientId) {

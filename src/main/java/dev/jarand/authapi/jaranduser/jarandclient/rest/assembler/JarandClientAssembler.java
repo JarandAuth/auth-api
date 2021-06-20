@@ -32,11 +32,11 @@ public class JarandClientAssembler {
                 instantSupplier.get());
     }
 
-    public JarandClient assembleNew(JarandUser jarandUser) {
+    public JarandClient assembleNew(JarandUser jarandUser, String password) {
         return new JarandClient(
                 uuidSupplier.get(),
                 jarandUser.getEmail(),
-                jarandUser.getPassword(),
+                passwordEncoder.encode(password),
                 jarandUser.getId(),
                 jarandUser.getTimeOfCreation());
     }

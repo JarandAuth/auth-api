@@ -24,7 +24,7 @@ public class JarandUserRepository {
     public Optional<JarandUser> getUser(UUID id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT id, email, username, display_name, password, time_of_creation FROM jarand_user WHERE id = :id",
+                    "SELECT id, email, username, display_name, time_of_creation FROM jarand_user WHERE id = :id",
                     new MapSqlParameterSource("id", id),
                     this::mapRow));
         } catch (IncorrectResultSizeDataAccessException ex) {
@@ -32,26 +32,14 @@ public class JarandUserRepository {
         }
     }
 
-    public Optional<JarandUser> getUserByUsername(String username) {
-        try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT id, email, username, display_name, password, time_of_creation FROM jarand_user WHERE username = :username",
-                    new MapSqlParameterSource("username", username),
-                    this::mapRow));
-        } catch (IncorrectResultSizeDataAccessException ex) {
-            return Optional.empty();
-        }
-    }
-
     public void createUser(JarandUser user) {
-        jdbcTemplate.update("INSERT INTO jarand_user(id, email, username, display_name, password, time_of_creation) " +
-                        "VALUES (:id, :email, :username, :display_name, :password, :time_of_creation)",
+        jdbcTemplate.update("INSERT INTO jarand_user(id, email, username, display_name, time_of_creation) " +
+                        "VALUES (:id, :email, :username, :display_name, :time_of_creation)",
                 new MapSqlParameterSource()
                         .addValue("id", user.getId())
                         .addValue("email", user.getEmail())
                         .addValue("username", user.getUsername())
                         .addValue("display_name", user.getDisplayName())
-                        .addValue("password", user.getPassword())
                         .addValue("time_of_creation", user.getTimeOfCreation().toString()));
     }
 
@@ -61,7 +49,6 @@ public class JarandUserRepository {
                 resultSet.getString("email"),
                 resultSet.getString("username"),
                 resultSet.getString("display_name"),
-                resultSet.getString("password"),
                 Instant.parse(resultSet.getString("time_of_creation")));
     }
 }
