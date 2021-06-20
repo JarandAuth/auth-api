@@ -26,8 +26,8 @@ class OAuthIntegrationTest extends ApiTest {
 
     @BeforeEach
     void setup() {
-        final var client = new JarandClient(UUID.randomUUID(), "someId", "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2", UUID.randomUUID(), Instant.now());
-        when(jarandClientRepository.getClientByClientId("someId")).thenReturn(Optional.of(client));
+        final var client = new JarandClient("someId", "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2", UUID.randomUUID(), Instant.now());
+        when(jarandClientRepository.getClient("someId")).thenReturn(Optional.of(client));
         when(grantedTypeRepository.get(any(), any())).thenReturn(Optional.of(mock(GrantedType.class)));
     }
 

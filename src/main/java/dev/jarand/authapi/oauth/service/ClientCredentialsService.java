@@ -45,15 +45,15 @@ public class ClientCredentialsService {
             logger.info("Cancelling client credentials flow (authentication failed) for clientId: {}", clientId);
             return Optional.empty();
         }
-        final var jarandUserClient = jarandClientService.getClientByClientId(clientId).orElseThrow();
-        if (grantedTypeService.get("client_credentials", jarandUserClient.getId()).isEmpty()) {
+        final var jarandUserClient = jarandClientService.getClient(clientId).orElseThrow();
+        if (grantedTypeService.get("client_credentials", jarandUserClient.getClientId()).isEmpty()) {
             logger.info("Cancelling client credentials flow (unauthorized client) for clientId: {}", clientId);
             return Optional.empty();
         }
         final var optionalScope = parameters.getScope().map(scopeParam -> {
             final var scopeParams = Arrays.asList(scopeParam.split(" "));
             final var scopeConnections = scopeParams.stream()
-                    .map(scope -> scopeConnectionService.get(scope, jarandUserClient.getId()))
+                    .map(scope -> scopeConnectionService.get(scope, jarandUserClient.getClientId()))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .toList();

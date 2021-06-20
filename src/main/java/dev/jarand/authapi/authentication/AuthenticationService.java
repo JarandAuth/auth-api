@@ -21,7 +21,7 @@ public class AuthenticationService {
 
     public boolean authenticate(String clientId, String clientSecret) {
         logger.info("Trying to authenticate client with clientId: {}", clientId);
-        final var optionalClient = jarandClientService.getClientByClientId(clientId);
+        final var optionalClient = jarandClientService.getClient(clientId);
         if (optionalClient.isEmpty()) {
             logger.info("Authentication failed (no client found) for clientId: {}", clientId);
             return false;

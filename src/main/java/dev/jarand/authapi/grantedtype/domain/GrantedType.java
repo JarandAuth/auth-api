@@ -1,13 +1,11 @@
 package dev.jarand.authapi.grantedtype.domain;
 
-import java.util.UUID;
-
 public class GrantedType {
 
     private final String grantType;
-    private final UUID jarandClientId;
+    private final String jarandClientId;
 
-    public GrantedType(String grantType, UUID jarandClientId) {
+    public GrantedType(String grantType, String jarandClientId) {
         this.grantType = grantType;
         this.jarandClientId = jarandClientId;
     }
@@ -16,7 +14,7 @@ public class GrantedType {
         return grantType;
     }
 
-    public UUID getJarandClientId() {
+    public String getJarandClientId() {
         return jarandClientId;
     }
 }

@@ -21,12 +21,11 @@ public class JarandClientResourceAssembler {
 
     public JarandClientResource assemble(JarandClient jarandClient) {
         return new JarandClientResource(
-                jarandClient.getId().toString(),
                 jarandClient.getClientId(),
                 jarandClient.getClientSecret(),
                 jarandClient.getOwnerId().toString(),
                 jarandClient.getTimeOfCreation().toString(),
-                grantedTypeResourceAssembler.assemble(grantedTypeService.get(jarandClient.getId())));
+                grantedTypeResourceAssembler.assemble(grantedTypeService.get(jarandClient.getClientId())));
     }
 
     public List<JarandClientResource> assemble(List<JarandClient> jarandClients) {

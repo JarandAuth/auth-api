@@ -21,8 +21,8 @@ public class JarandClientService {
         this.grantedTypeService = grantedTypeService;
     }
 
-    public Optional<JarandClient> getClientByClientId(String clientId) {
-        return repository.getClientByClientId(clientId);
+    public Optional<JarandClient> getClient(String clientId) {
+        return repository.getClient(clientId);
     }
 
     public List<JarandClient> getClients(UUID ownerId) {
@@ -31,7 +31,7 @@ public class JarandClientService {
 
     public void createClient(JarandClient jarandClient) {
         repository.createClient(jarandClient);
-        grantedTypeService.create(new GrantedType("client_credentials", jarandClient.getId()));
-        grantedTypeService.create(new GrantedType("refresh_token", jarandClient.getId()));
+        grantedTypeService.create(new GrantedType("client_credentials", jarandClient.getClientId()));
+        grantedTypeService.create(new GrantedType("refresh_token", jarandClient.getClientId()));
     }
 }
