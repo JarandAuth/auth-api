@@ -33,7 +33,7 @@ CREATE TABLE scope_connection
 
 CREATE TABLE refresh_token
 (
-    jti       VARCHAR NOT NULL,
+    jti       VARCHAR NOT NULL UNIQUE,
     subject   VARCHAR NOT NULL,
     issued_at VARCHAR NOT NULL
 );

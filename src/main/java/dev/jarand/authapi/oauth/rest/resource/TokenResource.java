@@ -1,7 +1,11 @@
 package dev.jarand.authapi.oauth.rest.resource;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(NON_NULL)
 public class TokenResource {
 
     private final String accessToken;

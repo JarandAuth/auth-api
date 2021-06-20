@@ -1,5 +1,6 @@
 package dev.jarand.authapi;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.jarand.authapi.jaranduser.jarandclient.repository.JarandClientRepository;
 import dev.jarand.authapi.jaranduser.repository.JarandUserRepository;
 import dev.jarand.authapi.scope.repository.ScopeConnectionRepository;
@@ -25,6 +26,9 @@ public class ApiTest {
 
     @Autowired
     protected MockMvc mockMvc;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     @MockBean
     protected JarandUserRepository jarandUserRepository;

@@ -50,4 +50,16 @@ public class TokenService {
         logger.info("Successfully created tokens for clientId: {}", clientId);
         return Optional.of(new Tokens(accessToken, accessTokenExpiresIn, refreshToken));
     }
+
+    public Optional<Tokens> createAccessToken(String clientId, Optional<String> scope) {
+        logger.info("Creating access token for clientId: {}", clientId);
+        final var issuedAt = instantSupplier.get();
+        final var accessToken = jwtService.createAccessToken(clientId, scope, issuedAt, accessTokenExpiresIn);
+        logger.info("Successfully created access token for clientId: {}", clientId);
+        return Optional.of(new Tokens(accessToken, accessTokenExpiresIn, null));
+    }
+
+    public boolean isRefreshTokenRegistered(String jti) {
+        return tokenRepository.exists(jti);
+    }
 }

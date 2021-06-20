@@ -1,5 +1,7 @@
 package dev.jarand.authapi.common.config;
 
+import io.jsonwebtoken.Clock;
+import io.jsonwebtoken.impl.DefaultClock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,5 +20,10 @@ public class Config {
     @Bean
     public Supplier<Instant> instantSupplier() {
         return Instant::now;
+    }
+
+    @Bean
+    public Clock clock() {
+        return new DefaultClock();
     }
 }

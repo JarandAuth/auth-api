@@ -5,6 +5,7 @@ OAuth 2.0 Authorization server implemented based on the documentation at https:/
 Grant types supported:
 
 - client_credentials
+- refresh_token
 
 Note:
 
@@ -13,7 +14,6 @@ Note:
 
 TODO:
 
-- Finish the refresh token flow ([Issue #1](https://github.com/JarandAuth/auth-api/issues/1))
 - Proper error messages for authentication failure ([Issue #3](https://github.com/JarandAuth/auth-api/issues/3))
 - Protect internal endpoints ([Issue #5](https://github.com/JarandAuth/auth-api/issues/5))
 
@@ -46,6 +46,18 @@ curl --location --request POST 'http://localhost:8080/security/auth/v0/oauth/tok
 --form 'grant_type="client_credentials"' \
 --form 'client_id="example.user@jarand.dev"' \
 --form 'client_secret="example-password"'
+```
+
+#### 4. Get access token using the refresh token flow
+
+- Replace REFRESH_TOKEN in the payload with refresh token from the client credentials flow
+
+```bash
+curl --location --request POST 'http://localhost:8080/security/auth/v0/oauth/token' \
+--form 'grant_type="refresh_token"' \
+--form 'client_id="example.user@jarand.dev"' \
+--form 'client_secret="example-password"' \
+--form 'refresh_token="REFRESH_TOKEN"'
 ```
 
 ### Creating another client
