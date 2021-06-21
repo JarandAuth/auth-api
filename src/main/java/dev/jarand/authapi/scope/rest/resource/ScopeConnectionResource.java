@@ -3,18 +3,18 @@ package dev.jarand.authapi.scope.rest.resource;
 public class ScopeConnectionResource {
 
     private final String scopeId;
-    private final String jarandClientId;
+    private final String clientId;
 
-    public ScopeConnectionResource(String scopeId, String jarandClientId) {
+    public ScopeConnectionResource(String scopeId, String clientId) {
         this.scopeId = scopeId;
-        this.jarandClientId = jarandClientId;
+        this.clientId = clientId;
     }
 
     public String getScopeId() {
         return scopeId;
     }
 
-    public String getJarandClientId() {
-        return jarandClientId;
+    public String getClientId() {
+        return clientId;
     }
 }

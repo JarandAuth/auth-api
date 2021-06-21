@@ -20,17 +20,17 @@ public class ScopeConnectionRepository {
     }
 
     public void create(ScopeConnection scopeConnection) {
-        jdbcTemplate.update("INSERT INTO scope_connection (scope_id, jarand_client_id) VALUES (:scope_id, :jarand_client_id)",
+        jdbcTemplate.update("INSERT INTO scope_connection (scope_id, client_id) VALUES (:scope_id, :client_id)",
                 new MapSqlParameterSource()
                         .addValue("scope_id", scopeConnection.getScopeId())
-                        .addValue("jarand_client_id", scopeConnection.getJarandClientId()));
+                        .addValue("client_id", scopeConnection.getClientId()));
     }
 
-    public Optional<ScopeConnection> get(String scopeId, String jarandClientId) {
+    public Optional<ScopeConnection> get(String scopeId, String clientId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT scope_id, jarand_client_id FROM scope_connection WHERE scope_id = :scope_id AND jarand_client_id = :jarand_client_id",
-                    new MapSqlParameterSource().addValue("scope_id", scopeId).addValue("jarand_client_id", jarandClientId),
+                    "SELECT scope_id, jarand_client_id FROM scope_connection WHERE scope_id = :scope_id AND client_id = :client_id",
+                    new MapSqlParameterSource().addValue("scope_id", scopeId).addValue("client_id", clientId),
                     this::mapRow));
         } catch (IncorrectResultSizeDataAccessException ex) {
             return Optional.empty();
@@ -38,6 +38,6 @@ public class ScopeConnectionRepository {
     }
 
     private ScopeConnection mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-        return new ScopeConnection(resultSet.getString("scope_id"), resultSet.getString("jarand_client_id"));
+        return new ScopeConnection(resultSet.getString("scope_id"), resultSet.getString("client_id"));
     }
 }

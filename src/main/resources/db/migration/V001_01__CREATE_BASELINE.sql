@@ -53,9 +53,9 @@ CREATE TABLE scope
 
 CREATE TABLE scope_connection
 (
-    scope_id         VARCHAR NOT NULL REFERENCES scope (id),
-    jarand_client_id VARCHAR NOT NULL REFERENCES jarand_client (client_id),
-    PRIMARY KEY (scope_id, jarand_client_id)
+    scope_id  VARCHAR NOT NULL REFERENCES scope (id),
+    client_id VARCHAR NOT NULL,
+    PRIMARY KEY (scope_id, client_id)
 );
 
 CREATE TABLE refresh_token

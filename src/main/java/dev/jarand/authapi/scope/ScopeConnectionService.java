@@ -19,7 +19,7 @@ public class ScopeConnectionService {
         repository.create(scopeConnection);
     }
 
-    public Optional<ScopeConnection> get(String scopeId, String jarandClientId) {
-        return repository.get(scopeId, jarandClientId);
+    public Optional<ScopeConnection> get(String scopeId, String clientId) {
+        return repository.get(scopeId, clientId);
     }
 }

@@ -82,7 +82,9 @@ public class RefreshTokenService {
             final var scopesRequested = scopeParams.size();
             final var scopeConnectionsSize = scopeConnections.size();
             if (scopesRequested != scopeConnectionsSize) {
-                logger.info("Mismatch between scopes in refresh token ({}) and scopes connected to client ({}) for clientId: {}", scopesRequested, scopeConnectionsSize, clientId);
+                logger.info(
+                        "Mismatch between scopes in refresh token ({}) and scopes connected to client ({}) for clientId: {}",
+                        scopesRequested, scopeConnectionsSize, clientId);
                 return null;
             }
             logger.info("Validated {} scopes in refresh token for clientId: {}", scopeConnectionsSize, clientId);

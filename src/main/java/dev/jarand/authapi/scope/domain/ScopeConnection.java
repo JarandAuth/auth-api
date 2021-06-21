@@ -3,18 +3,18 @@ package dev.jarand.authapi.scope.domain;
 public class ScopeConnection {
 
     private final String scopeId;
-    private final String jarandClientId;
+    private final String clientId;
 
-    public ScopeConnection(String scopeId, String jarandClientId) {
+    public ScopeConnection(String scopeId, String clientId) {
         this.scopeId = scopeId;
-        this.jarandClientId = jarandClientId;
+        this.clientId = clientId;
     }
 
     public String getScopeId() {
         return scopeId;
     }
 
-    public String getJarandClientId() {
-        return jarandClientId;
+    public String getClientId() {
+        return clientId;
     }
 }

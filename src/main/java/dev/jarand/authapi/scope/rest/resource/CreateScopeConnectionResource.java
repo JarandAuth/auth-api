@@ -6,14 +6,14 @@ import javax.validation.constraints.NotNull;
 
 public class CreateScopeConnectionResource {
 
-    private final String jarandClientId;
+    private final String clientId;
 
-    public CreateScopeConnectionResource(@JsonProperty("jarandClientId") String jarandClientId) {
-        this.jarandClientId = jarandClientId;
+    public CreateScopeConnectionResource(@JsonProperty("clientId") String clientId) {
+        this.clientId = clientId;
     }
 
     @NotNull
-    public String getJarandClientId() {
-        return jarandClientId;
+    public String getClientId() {
+        return clientId;
     }
 }

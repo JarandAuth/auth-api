@@ -65,7 +65,9 @@ public class ClientCredentialsService {
             final var scopesRequested = scopeParams.size();
             final var scopeConnectionsSize = scopeConnections.size();
             if (scopesRequested != scopeConnectionsSize) {
-                logger.info("Mismatch between scopes requested ({}) and scopes connected to client ({}) for clientId: {}", scopesRequested, scopeConnectionsSize, clientId);
+                logger.info(
+                        "Mismatch between scopes requested ({}) and scopes connected to client ({}) for clientId: {}",
+                        scopesRequested, scopeConnectionsSize, clientId);
                 return null;
             }
             logger.info("Validated {} scopes requested for clientId: {}", scopeConnectionsSize, clientId);

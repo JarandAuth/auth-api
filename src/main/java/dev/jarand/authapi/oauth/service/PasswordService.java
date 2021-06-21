@@ -40,7 +40,7 @@ public class PasswordService {
     public Optional<Tokens> handle(PasswordParameters parameters) {
         final var username = parameters.getUsername();
         final var password = parameters.getPassword();
-        logger.info("Performing password flow for clientId: {}", username);
+        logger.info("Performing password flow for username: {}", username);
         final var optionalLoginClient = loginClientService.getClient(username);
         if (optionalLoginClient.isEmpty()) {
             logger.info("Cancelling password flow (login client not found) for username: {}", username);
@@ -53,7 +53,7 @@ public class PasswordService {
         }
         final var clientId = loginClient.getClientId();
         if (grantedTypeService.get("password", clientId).isEmpty()) {
-            logger.info("Cancelling password flow (unauthorized client) for username: {}", username);
+            logger.info("Cancelling password flow (unauthorized client) for clientId: {} and username: {}", clientId, username);
             return Optional.empty();
         }
         final var optionalScope = parameters.getScope().map(scopeParam -> {
@@ -66,18 +66,20 @@ public class PasswordService {
             final var scopesRequested = scopeParams.size();
             final var scopeConnectionsSize = scopeConnections.size();
             if (scopesRequested != scopeConnectionsSize) {
-                logger.info("Mismatch between scopes requested ({}) and scopes connected to client ({}) for clientId: {}", scopesRequested, scopeConnectionsSize, clientId);
+                logger.info(
+                        "Mismatch between scopes requested ({}) and scopes connected to client ({}) for clientId: {} and username: {}",
+                        scopesRequested, scopeConnectionsSize, clientId, username);
                 return null;
             }
-            logger.info("Validated {} scopes requested for clientId: {}", scopeConnectionsSize, clientId);
+            logger.info("Validated {} scopes requested for clientId: {} and username: {}", scopeConnectionsSize, clientId, username);
             return scopeParam;
         });
         final var optionalTokens = tokenService.createTokens(clientId, optionalScope);
         if (optionalTokens.isEmpty()) {
-            logger.info("Cancelling password flow (token creation failed) for username: {}", username);
+            logger.info("Cancelling password flow (token creation failed) for clientId: {} and username: {}", clientId, username);
             return Optional.empty();
         }
-        logger.info("Successful password flow for username: {}", username);
+        logger.info("Successful password flow for clientId: {} and username: {}", clientId, username);
         return optionalTokens;
     }
 }
