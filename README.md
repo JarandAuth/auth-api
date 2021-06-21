@@ -6,6 +6,7 @@ Grant types supported:
 
 - client_credentials
 - refresh_token
+- password
 
 Note:
 
