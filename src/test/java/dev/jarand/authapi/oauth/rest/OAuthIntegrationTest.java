@@ -3,6 +3,7 @@ package dev.jarand.authapi.oauth.rest;
 import dev.jarand.authapi.ApiTest;
 import dev.jarand.authapi.grantedtype.domain.GrantedType;
 import dev.jarand.authapi.jaranduser.jarandclient.domain.JarandClient;
+import dev.jarand.authapi.jaranduser.jarandclient.domain.LoginClient;
 import dev.jarand.authapi.oauth.rest.resource.TokenResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,10 @@ class OAuthIntegrationTest extends ApiTest {
 
     @BeforeEach
     void setup() {
-        final var client = new JarandClient("someId", "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2", UUID.randomUUID(), Instant.now());
-        when(jarandClientRepository.getClient("someId")).thenReturn(Optional.of(client));
+        final var jarandClient = new JarandClient("someId", "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2", UUID.randomUUID(), Instant.now());
+        final var loginClient = new LoginClient(UUID.randomUUID().toString(), "someId", "$2a$10$Jhe7o8MxZeDMFlNTpxqH4uOXzyeuvbNIkDtTRPpcMBPjGdoLWv.MS", UUID.randomUUID(), Instant.now());
+        when(jarandClientRepository.getClient("someId")).thenReturn(Optional.of(jarandClient));
+        when(loginClientRepository.getClient("someUsername")).thenReturn(Optional.of(loginClient));
         when(grantedTypeRepository.get(any(), any())).thenReturn(Optional.of(mock(GrantedType.class)));
     }
 
@@ -41,7 +44,7 @@ class OAuthIntegrationTest extends ApiTest {
                 .andExpect(status().isOk()).andReturn();
 
         final var actualJson = mvcResult.getResponse().getContentAsString();
-        final var expectedJson = fileAsString("/token/token.json");
+        final var expectedJson = fileAsString("/token/client-credentials/token.json");
         JSONAssert.assertEquals(
                 expectedJson,
                 actualJson,
@@ -74,6 +77,23 @@ class OAuthIntegrationTest extends ApiTest {
                 expectedJson,
                 actualJson,
                 new CustomComparator(JSONCompareMode.STRICT, isPresent("access_token")));
+    }
+
+    @Test
+    void POST_token_for_password_flow_should_return_tokens() throws Exception {
+        final var mvcResult = mockMvc.perform(
+                post("/oauth/token")
+                        .param("grant_type", "password")
+                        .param("username", "someUsername")
+                        .param("password", "somePassword"))
+                .andExpect(status().isOk()).andReturn();
+
+        final var actualJson = mvcResult.getResponse().getContentAsString();
+        final var expectedJson = fileAsString("/token/password/token.json");
+        JSONAssert.assertEquals(
+                expectedJson,
+                actualJson,
+                new CustomComparator(JSONCompareMode.STRICT, isPresent("access_token"), isPresent("refresh_token")));
     }
 
     @Test
@@ -177,6 +197,41 @@ class OAuthIntegrationTest extends ApiTest {
 
         final var actualJson = mvcResult.getResponse().getContentAsString();
         final var expectedJson = fileAsString("/token/refresh-token/missing-refresh-token.json");
+        JSONAssert.assertEquals(expectedJson, actualJson, true);
+    }
+
+    @Test
+    void POST_token_for_password_flow_without_parameters_should_return_error() throws Exception {
+        final var mvcResult = mockMvc.perform(post("/oauth/token").param("grant_type", "password")).andExpect(status().isBadRequest()).andReturn();
+
+        final var actualJson = mvcResult.getResponse().getContentAsString();
+        final var expectedJson = fileAsString("/token/password/missing-parameters.json");
+        JSONAssert.assertEquals(expectedJson, actualJson, true);
+    }
+
+    @Test
+    void POST_token_for_password_flow_without_username_should_return_error() throws Exception {
+        final var mvcResult = mockMvc.perform(
+                post("/oauth/token")
+                        .param("grant_type", "password")
+                        .param("password", "wrongPassword"))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        final var actualJson = mvcResult.getResponse().getContentAsString();
+        final var expectedJson = fileAsString("/token/password/missing-username.json");
+        JSONAssert.assertEquals(expectedJson, actualJson, true);
+    }
+
+    @Test
+    void POST_token_for_password_flow_without_password_should_return_error() throws Exception {
+        final var mvcResult = mockMvc.perform(
+                post("/oauth/token")
+                        .param("grant_type", "password")
+                        .param("username", "wrongUsername"))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        final var actualJson = mvcResult.getResponse().getContentAsString();
+        final var expectedJson = fileAsString("/token/password/missing-password.json");
         JSONAssert.assertEquals(expectedJson, actualJson, true);
     }
 }

@@ -14,6 +14,6 @@ public class GrantedTypeResourceAssembler {
     }
 
     private GrantedTypeResource assemble(GrantedType grantedType) {
-        return new GrantedTypeResource(grantedType.getGrantType(), grantedType.getJarandClientId());
+        return new GrantedTypeResource(grantedType.getGrantType(), grantedType.getClientId());
     }
 }

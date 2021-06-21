@@ -1,8 +1,8 @@
 package dev.jarand.authapi.oauth.service;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
-import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
-import dev.jarand.authapi.oauth.domain.ClientCredentialsParameters;
+import dev.jarand.authapi.jaranduser.jarandclient.LoginClientService;
+import dev.jarand.authapi.oauth.domain.PasswordParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
 import dev.jarand.authapi.scope.ScopeConnectionService;
 import dev.jarand.authapi.token.TokenService;
@@ -15,44 +15,45 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-public class ClientCredentialsService {
+public class PasswordService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientCredentialsService.class);
+    private static final Logger logger = LoggerFactory.getLogger(PasswordService.class);
 
-    private final JarandClientService jarandClientService;
+    private final LoginClientService loginClientService;
     private final PasswordEncoder passwordEncoder;
     private final GrantedTypeService grantedTypeService;
     private final ScopeConnectionService scopeConnectionService;
     private final TokenService tokenService;
 
-    public ClientCredentialsService(JarandClientService jarandClientService,
-                                    PasswordEncoder passwordEncoder,
-                                    GrantedTypeService grantedTypeService,
-                                    ScopeConnectionService scopeConnectionService,
-                                    TokenService tokenService) {
-        this.jarandClientService = jarandClientService;
+    public PasswordService(LoginClientService loginClientService,
+                           PasswordEncoder passwordEncoder,
+                           GrantedTypeService grantedTypeService,
+                           ScopeConnectionService scopeConnectionService,
+                           TokenService tokenService) {
+        this.loginClientService = loginClientService;
         this.passwordEncoder = passwordEncoder;
         this.grantedTypeService = grantedTypeService;
         this.scopeConnectionService = scopeConnectionService;
         this.tokenService = tokenService;
     }
 
-    public Optional<Tokens> handle(ClientCredentialsParameters parameters) {
-        final var clientId = parameters.getClientId();
-        final var clientSecret = parameters.getClientSecret();
-        logger.info("Performing client credentials flow for clientId: {}", clientId);
-        final var optionalJarandClient = jarandClientService.getClient(clientId);
-        if (optionalJarandClient.isEmpty()) {
-            logger.info("Cancelling client credentials flow (client not found) for clientId: {}", clientId);
+    public Optional<Tokens> handle(PasswordParameters parameters) {
+        final var username = parameters.getUsername();
+        final var password = parameters.getPassword();
+        logger.info("Performing password flow for clientId: {}", username);
+        final var optionalLoginClient = loginClientService.getClient(username);
+        if (optionalLoginClient.isEmpty()) {
+            logger.info("Cancelling password flow (login client not found) for username: {}", username);
             return Optional.empty();
         }
-        final var jarandClient = optionalJarandClient.get();
-        if (!passwordEncoder.matches(clientSecret, jarandClient.getClientSecret())) {
-            logger.info("Cancelling client credentials flow (secret mismatch) for clientId: {}", clientId);
+        final var loginClient = optionalLoginClient.get();
+        if (!passwordEncoder.matches(password, loginClient.getPassword())) {
+            logger.info("Cancelling password flow (password mismatch) for username: {}", username);
             return Optional.empty();
         }
-        if (grantedTypeService.get("client_credentials", clientId).isEmpty()) {
-            logger.info("Cancelling client credentials flow (unauthorized client) for clientId: {}", clientId);
+        final var clientId = loginClient.getClientId();
+        if (grantedTypeService.get("password", clientId).isEmpty()) {
+            logger.info("Cancelling password flow (unauthorized client) for username: {}", username);
             return Optional.empty();
         }
         final var optionalScope = parameters.getScope().map(scopeParam -> {
@@ -73,10 +74,10 @@ public class ClientCredentialsService {
         });
         final var optionalTokens = tokenService.createTokens(clientId, optionalScope);
         if (optionalTokens.isEmpty()) {
-            logger.info("Cancelling client credentials flow (token creation failed) for clientId: {}", clientId);
+            logger.info("Cancelling password flow (token creation failed) for username: {}", username);
             return Optional.empty();
         }
-        logger.info("Successful client credentials flow for clientId: {}", clientId);
+        logger.info("Successful password flow for username: {}", username);
         return optionalTokens;
     }
 }

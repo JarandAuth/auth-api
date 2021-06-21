@@ -15,6 +15,15 @@ CREATE TABLE jarand_client
     time_of_creation VARCHAR NOT NULL
 );
 
+CREATE TABLE login_client
+(
+    client_id        VARCHAR PRIMARY KEY,
+    username         VARCHAR NOT NULL UNIQUE,
+    password         VARCHAR NOT NULL,
+    owner_id         UUID    NOT NULL REFERENCES jarand_user (id),
+    time_of_creation VARCHAR NOT NULL
+);
+
 CREATE TABLE grant_type
 (
     grant_type       VARCHAR PRIMARY KEY,
@@ -25,12 +34,14 @@ INSERT INTO grant_type(grant_type, time_of_creation)
 VALUES ('client_credentials', (now() AT TIME ZONE 'UTC'));
 INSERT INTO grant_type(grant_type, time_of_creation)
 VALUES ('refresh_token', (now() AT TIME ZONE 'UTC'));
+INSERT INTO grant_type(grant_type, time_of_creation)
+VALUES ('password', (now() AT TIME ZONE 'UTC'));
 
 CREATE TABLE granted_type
 (
-    grant_type       VARCHAR NOT NULL REFERENCES grant_type (grant_type),
-    jarand_client_id VARCHAR NOT NULL REFERENCES jarand_client (client_id),
-    PRIMARY KEY (grant_type, jarand_client_id)
+    grant_type VARCHAR NOT NULL REFERENCES grant_type (grant_type),
+    client_id  VARCHAR NOT NULL,
+    PRIMARY KEY (grant_type, client_id)
 );
 
 CREATE TABLE scope

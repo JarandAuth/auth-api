@@ -21,25 +21,25 @@ public class GrantedTypeRepository {
     }
 
     public void create(GrantedType grantedType) {
-        jdbcTemplate.update("INSERT INTO granted_type (grant_type, jarand_client_id) VALUES (:grant_type, :jarand_client_id)",
+        jdbcTemplate.update("INSERT INTO granted_type (grant_type, client_id) VALUES (:grant_type, :client_id)",
                 new MapSqlParameterSource()
                         .addValue("grant_type", grantedType.getGrantType())
-                        .addValue("jarand_client_id", grantedType.getJarandClientId()));
+                        .addValue("client_id", grantedType.getClientId()));
     }
 
-    public List<GrantedType> get(String jarandClientId) {
-        return jdbcTemplate.query("SELECT grant_type, jarand_client_id FROM granted_type WHERE jarand_client_id = :jarand_client_id",
-                new MapSqlParameterSource().addValue("jarand_client_id", jarandClientId),
+    public List<GrantedType> get(String clientId) {
+        return jdbcTemplate.query("SELECT grant_type, client_id FROM granted_type WHERE client_id = :client_id",
+                new MapSqlParameterSource().addValue("client_id", clientId),
                 this::mapRow);
     }
 
-    public Optional<GrantedType> get(String grantType, String jarandClientId) {
+    public Optional<GrantedType> get(String grantType, String clientId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT grant_type, jarand_client_id FROM granted_type WHERE grant_type = :grant_type AND jarand_client_id = :jarand_client_id",
+                    "SELECT grant_type, client_id FROM granted_type WHERE grant_type = :grant_type AND client_id = :client_id",
                     new MapSqlParameterSource()
                             .addValue("grant_type", grantType)
-                            .addValue("jarand_client_id", jarandClientId),
+                            .addValue("client_id", clientId),
                     this::mapRow));
         } catch (IncorrectResultSizeDataAccessException ex) {
             return Optional.empty();
@@ -47,6 +47,6 @@ public class GrantedTypeRepository {
     }
 
     private GrantedType mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-        return new GrantedType(resultSet.getString("grant_type"), resultSet.getString("jarand_client_id"));
+        return new GrantedType(resultSet.getString("grant_type"), resultSet.getString("client_id"));
     }
 }

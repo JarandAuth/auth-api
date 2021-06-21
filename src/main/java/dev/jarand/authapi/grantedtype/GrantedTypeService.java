@@ -24,7 +24,7 @@ public class GrantedTypeService {
         return repository.get(jarandClientId);
     }
 
-    public Optional<GrantedType> get(String grantType, String jarandClientId) {
-        return repository.get(grantType, jarandClientId);
+    public Optional<GrantedType> get(String grantType, String clientId) {
+        return repository.get(grantType, clientId);
     }
 }

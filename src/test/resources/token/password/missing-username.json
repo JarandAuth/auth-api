@@ -1,0 +1,4 @@
+{
+  "error": "invalid_request",
+  "error_description": "Missing 'username' or 'password' parameter required for the 'password' grant type"
+}
