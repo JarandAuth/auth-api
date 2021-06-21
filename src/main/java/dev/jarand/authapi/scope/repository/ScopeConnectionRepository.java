@@ -29,7 +29,7 @@ public class ScopeConnectionRepository {
     public Optional<ScopeConnection> get(String scopeId, String clientId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT scope_id, jarand_client_id FROM scope_connection WHERE scope_id = :scope_id AND client_id = :client_id",
+                    "SELECT scope_id, client_id FROM scope_connection WHERE scope_id = :scope_id AND client_id = :client_id",
                     new MapSqlParameterSource().addValue("scope_id", scopeId).addValue("client_id", clientId),
                     this::mapRow));
         } catch (IncorrectResultSizeDataAccessException ex) {

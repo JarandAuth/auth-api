@@ -53,6 +53,11 @@ public class ScopeController {
         return ResponseEntity.ok(scopeResourceAssembler.assemble(scopeService.getScopes()));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<ScopeResource> getScope(@PathVariable String id) {
+        return scopeService.getScope(id).map(scopeResourceAssembler::assemble).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping("{id}/connection")
     public ResponseEntity<ScopeConnectionResource> createScopeConnection(@PathVariable String id, @Valid @RequestBody CreateScopeConnectionResource resource) {
         final var scopeConnection = scopeConnectionAssembler.assembleNew(id, resource);
