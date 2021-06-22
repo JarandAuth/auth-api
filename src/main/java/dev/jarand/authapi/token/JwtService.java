@@ -1,4 +1,4 @@
-package dev.jarand.authapi.oauth.service;
+package dev.jarand.authapi.token;
 
 import dev.jarand.authapi.oauth.domain.RefreshTokenClaims;
 import io.jsonwebtoken.*;

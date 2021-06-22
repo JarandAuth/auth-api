@@ -1,4 +1,4 @@
-package dev.jarand.authapi.oauth.service;
+package dev.jarand.authapi.oauth;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
 import dev.jarand.authapi.jaranduser.jarandclient.LoginClientService;

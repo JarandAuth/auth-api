@@ -1,4 +1,4 @@
-package dev.jarand.authapi.oauth.service;
+package dev.jarand.authapi.oauth;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
 import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
@@ -22,20 +22,17 @@ public class RefreshTokenService {
     private final JarandClientService jarandClientService;
     private final PasswordEncoder passwordEncoder;
     private final GrantedTypeService grantedTypeService;
-    private final JwtService jwtService;
     private final TokenService tokenService;
     private final ScopeConnectionService scopeConnectionService;
 
     public RefreshTokenService(JarandClientService jarandClientService,
                                PasswordEncoder passwordEncoder,
                                GrantedTypeService grantedTypeService,
-                               JwtService jwtService,
                                TokenService tokenService,
                                ScopeConnectionService scopeConnectionService) {
         this.jarandClientService = jarandClientService;
         this.passwordEncoder = passwordEncoder;
         this.grantedTypeService = grantedTypeService;
-        this.jwtService = jwtService;
         this.tokenService = tokenService;
         this.scopeConnectionService = scopeConnectionService;
     }
@@ -58,7 +55,7 @@ public class RefreshTokenService {
             logger.info("Cancelling refresh token flow (unauthorized client) for clientId: {}", clientId);
             return Optional.empty();
         }
-        final var optionalRefreshTokenClaims = jwtService.parseRefreshToken(parameters.getRefreshToken());
+        final var optionalRefreshTokenClaims = tokenService.parseRefreshToken(parameters.getRefreshToken());
         if (optionalRefreshTokenClaims.isEmpty()) {
             logger.info("Cancelling refresh token flow (token parsing failed) for clientId: {}", clientId);
             return Optional.empty();

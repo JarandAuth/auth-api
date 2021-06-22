@@ -1,7 +1,7 @@
 package dev.jarand.authapi.token;
 
+import dev.jarand.authapi.oauth.domain.RefreshTokenClaims;
 import dev.jarand.authapi.oauth.domain.Tokens;
-import dev.jarand.authapi.oauth.service.JwtService;
 import dev.jarand.authapi.token.repository.TokenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +57,10 @@ public class TokenService {
         final var accessToken = jwtService.createAccessToken(clientId, scope, issuedAt, accessTokenExpiresIn);
         logger.info("Successfully created access token for clientId: {}", clientId);
         return Optional.of(new Tokens(accessToken, accessTokenExpiresIn, null));
+    }
+
+    public Optional<RefreshTokenClaims> parseRefreshToken(String refreshToken) {
+        return jwtService.parseRefreshToken(refreshToken);
     }
 
     public boolean isRefreshTokenRegistered(String jti) {
