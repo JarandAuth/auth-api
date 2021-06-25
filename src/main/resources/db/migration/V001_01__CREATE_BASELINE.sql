@@ -10,18 +10,12 @@ CREATE TABLE jarand_user
 CREATE TABLE jarand_client
 (
     client_id        VARCHAR PRIMARY KEY,
-    client_secret    VARCHAR NOT NULL UNIQUE,
+    type             VARCHAR NOT NULL,
     owner_id         UUID    NOT NULL REFERENCES jarand_user (id),
-    time_of_creation VARCHAR NOT NULL
-);
-
-CREATE TABLE login_client
-(
-    client_id        VARCHAR PRIMARY KEY,
-    username         VARCHAR NOT NULL UNIQUE,
-    password         VARCHAR NOT NULL,
-    owner_id         UUID    NOT NULL REFERENCES jarand_user (id),
-    time_of_creation VARCHAR NOT NULL
+    time_of_creation VARCHAR NOT NULL,
+    client_secret    VARCHAR UNIQUE,
+    username         VARCHAR UNIQUE,
+    password         VARCHAR
 );
 
 CREATE TABLE grant_type

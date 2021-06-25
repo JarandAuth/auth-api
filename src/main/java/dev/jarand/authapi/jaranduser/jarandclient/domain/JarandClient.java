@@ -6,13 +6,13 @@ import java.util.UUID;
 public class JarandClient {
 
     private final String clientId;
-    private final String clientSecret;
+    private final String type;
     private final UUID ownerId;
     private final Instant timeOfCreation;
 
-    public JarandClient(String clientId, String clientSecret, UUID ownerId, Instant timeOfCreation) {
+    public JarandClient(String clientId, String type, UUID ownerId, Instant timeOfCreation) {
         this.clientId = clientId;
-        this.clientSecret = clientSecret;
+        this.type = type;
         this.ownerId = ownerId;
         this.timeOfCreation = timeOfCreation;
     }
@@ -21,8 +21,8 @@ public class JarandClient {
         return clientId;
     }
 
-    public String getClientSecret() {
-        return clientSecret;
+    public String getType() {
+        return type;
     }
 
     public UUID getOwnerId() {

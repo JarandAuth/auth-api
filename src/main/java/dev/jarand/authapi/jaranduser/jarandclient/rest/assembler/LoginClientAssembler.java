@@ -22,9 +22,10 @@ public class LoginClientAssembler {
     public LoginClient assembleNew(JarandUser jarandUser, String password) {
         return new LoginClient(
                 uuidSupplier.get().toString(),
-                jarandUser.getUsername(),
-                passwordEncoder.encode(password),
+                "LOGIN",
                 jarandUser.getId(),
-                jarandUser.getTimeOfCreation());
+                jarandUser.getTimeOfCreation(),
+                jarandUser.getUsername(),
+                passwordEncoder.encode(password));
     }
 }

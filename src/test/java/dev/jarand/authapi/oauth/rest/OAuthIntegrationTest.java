@@ -2,8 +2,8 @@ package dev.jarand.authapi.oauth.rest;
 
 import dev.jarand.authapi.ApiTest;
 import dev.jarand.authapi.grantedtype.domain.GrantedType;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.JarandClient;
 import dev.jarand.authapi.jaranduser.jarandclient.domain.LoginClient;
+import dev.jarand.authapi.jaranduser.jarandclient.domain.SecretClient;
 import dev.jarand.authapi.oauth.rest.resource.TokenResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,10 +27,10 @@ class OAuthIntegrationTest extends ApiTest {
 
     @BeforeEach
     void setup() {
-        final var jarandClient = new JarandClient("someId", "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2", UUID.randomUUID(), Instant.now());
-        final var loginClient = new LoginClient(UUID.randomUUID().toString(), "someId", "$2a$10$Jhe7o8MxZeDMFlNTpxqH4uOXzyeuvbNIkDtTRPpcMBPjGdoLWv.MS", UUID.randomUUID(), Instant.now());
-        when(jarandClientRepository.getClient("someId")).thenReturn(Optional.of(jarandClient));
-        when(loginClientRepository.getClient("someUsername")).thenReturn(Optional.of(loginClient));
+        final var secretClient = new SecretClient("someSecretClientId", "SECRET", UUID.randomUUID(), Instant.now(), "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2");
+        final var loginClient = new LoginClient("someLoginClientId", "LOGIN", UUID.randomUUID(), Instant.now(), "someUsername", "$2a$10$Jhe7o8MxZeDMFlNTpxqH4uOXzyeuvbNIkDtTRPpcMBPjGdoLWv.MS");
+        when(jarandClientRepository.getClient("someSecretClientId")).thenReturn(Optional.of(secretClient));
+        when(jarandClientRepository.getLoginClient("someUsername")).thenReturn(Optional.of(loginClient));
         when(grantedTypeRepository.get(any(), any())).thenReturn(Optional.of(mock(GrantedType.class)));
     }
 
@@ -39,7 +39,7 @@ class OAuthIntegrationTest extends ApiTest {
         final var mvcResult = mockMvc.perform(
                 post("/oauth/token")
                         .param("grant_type", "client_credentials")
-                        .param("client_id", "someId")
+                        .param("client_id", "someSecretClientId")
                         .param("client_secret", "someSecret"))
                 .andExpect(status().isOk()).andReturn();
 
@@ -56,7 +56,7 @@ class OAuthIntegrationTest extends ApiTest {
         final var clientCredentialsResult = mockMvc.perform(
                 post("/oauth/token")
                         .param("grant_type", "client_credentials")
-                        .param("client_id", "someId")
+                        .param("client_id", "someSecretClientId")
                         .param("client_secret", "someSecret"))
                 .andExpect(status().isOk()).andReturn();
         final var clientCredentialsResource = objectMapper.readValue(clientCredentialsResult.getResponse().getContentAsString(), TokenResource.class);
@@ -66,7 +66,7 @@ class OAuthIntegrationTest extends ApiTest {
         final var mvcResult = mockMvc.perform(
                 post("/oauth/token")
                         .param("grant_type", "refresh_token")
-                        .param("client_id", "someId")
+                        .param("client_id", "someSecretClientId")
                         .param("client_secret", "someSecret")
                         .param("refresh_token", refreshToken))
                 .andExpect(status().isOk()).andReturn();

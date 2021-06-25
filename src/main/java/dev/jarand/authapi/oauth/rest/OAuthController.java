@@ -1,11 +1,11 @@
 package dev.jarand.authapi.oauth.rest;
 
-import dev.jarand.authapi.oauth.domain.Tokens;
-import dev.jarand.authapi.oauth.rest.assembler.OAuthErrorResourceAssembler;
-import dev.jarand.authapi.oauth.rest.resource.TokenResourceAssembler;
 import dev.jarand.authapi.oauth.ClientCredentialsService;
 import dev.jarand.authapi.oauth.PasswordService;
 import dev.jarand.authapi.oauth.RefreshTokenService;
+import dev.jarand.authapi.oauth.domain.Tokens;
+import dev.jarand.authapi.oauth.rest.assembler.OAuthErrorResourceAssembler;
+import dev.jarand.authapi.oauth.rest.resource.TokenResourceAssembler;
 import dev.jarand.authapi.oauth.validator.RequestParametersValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

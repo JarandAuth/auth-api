@@ -1,7 +1,7 @@
 package dev.jarand.authapi.oauth;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
-import dev.jarand.authapi.jaranduser.jarandclient.LoginClientService;
+import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
 import dev.jarand.authapi.oauth.domain.PasswordParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
 import dev.jarand.authapi.scope.ScopeConnectionService;
@@ -19,18 +19,18 @@ public class PasswordService {
 
     private static final Logger logger = LoggerFactory.getLogger(PasswordService.class);
 
-    private final LoginClientService loginClientService;
+    private final JarandClientService jarandClientService;
     private final PasswordEncoder passwordEncoder;
     private final GrantedTypeService grantedTypeService;
     private final ScopeConnectionService scopeConnectionService;
     private final TokenService tokenService;
 
-    public PasswordService(LoginClientService loginClientService,
+    public PasswordService(JarandClientService jarandClientService,
                            PasswordEncoder passwordEncoder,
                            GrantedTypeService grantedTypeService,
                            ScopeConnectionService scopeConnectionService,
                            TokenService tokenService) {
-        this.loginClientService = loginClientService;
+        this.jarandClientService = jarandClientService;
         this.passwordEncoder = passwordEncoder;
         this.grantedTypeService = grantedTypeService;
         this.scopeConnectionService = scopeConnectionService;
@@ -41,9 +41,9 @@ public class PasswordService {
         final var username = parameters.getUsername();
         final var password = parameters.getPassword();
         logger.info("Performing password flow for username: {}", username);
-        final var optionalLoginClient = loginClientService.getClient(username);
+        final var optionalLoginClient = jarandClientService.getLoginClient(username);
         if (optionalLoginClient.isEmpty()) {
-            logger.info("Cancelling password flow (login client not found) for username: {}", username);
+            logger.info("Cancelling password flow (client not found) for username: {}", username);
             return Optional.empty();
         }
         final var loginClient = optionalLoginClient.get();

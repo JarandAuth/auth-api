@@ -2,6 +2,7 @@ package dev.jarand.authapi.oauth;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
 import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
+import dev.jarand.authapi.jaranduser.jarandclient.domain.SecretClient;
 import dev.jarand.authapi.oauth.domain.RefreshTokenParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
 import dev.jarand.authapi.scope.ScopeConnectionService;
@@ -41,15 +42,18 @@ public class RefreshTokenService {
         final var clientId = parameters.getClientId();
         final var clientSecret = parameters.getClientSecret();
         logger.info("Performing refresh token flow for clientId: {}", clientId);
-        final var optionalJarandClient = jarandClientService.getClient(clientId);
-        if (optionalJarandClient.isEmpty()) {
+        final var optionalClient = jarandClientService.getClient(clientId);
+        if (optionalClient.isEmpty()) {
             logger.info("Cancelling refresh token flow (client not found) for clientId: {}", clientId);
             return Optional.empty();
         }
-        final var jarandClient = optionalJarandClient.get();
-        if (!passwordEncoder.matches(clientSecret, jarandClient.getClientSecret())) {
-            logger.info("Cancelling refresh token flow (secret mismatch) for clientId: {}", clientId);
-            return Optional.empty();
+        final var client = optionalClient.get();
+        if ("SECRET".equals(client.getType())) {
+            final var secretClient = (SecretClient) client;
+            if (!passwordEncoder.matches(clientSecret, secretClient.getClientSecret())) {
+                logger.info("Cancelling refresh token flow (secret mismatch) for clientId: {}", clientId);
+                return Optional.empty();
+            }
         }
         if (grantedTypeService.get("refresh_token", clientId).isEmpty()) {
             logger.info("Cancelling refresh token flow (unauthorized client) for clientId: {}", clientId);
@@ -61,12 +65,12 @@ public class RefreshTokenService {
             return Optional.empty();
         }
         final var refreshTokenClaims = optionalRefreshTokenClaims.get();
-        if (!tokenService.isRefreshTokenRegistered(refreshTokenClaims.getJti())) {
-            logger.info("Cancelling refresh token flow (refresh token not registered) for clientId: {}", clientId);
-            return Optional.empty();
-        }
         if (!refreshTokenClaims.getSubject().equals(clientId)) {
             logger.info("Cancelling refresh token flow (subject mismatch) for clientId: {}", clientId);
+            return Optional.empty();
+        }
+        if (!tokenService.isRefreshTokenRegistered(refreshTokenClaims.getJti())) {
+            logger.info("Cancelling refresh token flow (refresh token not registered) for clientId: {}", clientId);
             return Optional.empty();
         }
         final var optionalScope = refreshTokenClaims.getScope().map(scopeParam -> {

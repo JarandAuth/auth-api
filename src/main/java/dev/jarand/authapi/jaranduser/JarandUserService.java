@@ -2,9 +2,8 @@ package dev.jarand.authapi.jaranduser;
 
 import dev.jarand.authapi.jaranduser.domain.JarandUser;
 import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
-import dev.jarand.authapi.jaranduser.jarandclient.LoginClientService;
-import dev.jarand.authapi.jaranduser.jarandclient.rest.assembler.JarandClientAssembler;
 import dev.jarand.authapi.jaranduser.jarandclient.rest.assembler.LoginClientAssembler;
+import dev.jarand.authapi.jaranduser.jarandclient.rest.assembler.SecretClientAssembler;
 import dev.jarand.authapi.jaranduser.repository.JarandUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +14,18 @@ import java.util.UUID;
 public class JarandUserService {
 
     private final JarandUserRepository repository;
-    private final LoginClientService loginClientService;
-    private final LoginClientAssembler loginClientAssembler;
     private final JarandClientService jarandClientService;
-    private final JarandClientAssembler jarandClientAssembler;
+    private final SecretClientAssembler secretClientAssembler;
+    private final LoginClientAssembler loginClientAssembler;
 
     public JarandUserService(JarandUserRepository repository,
-                             LoginClientService loginClientService,
-                             LoginClientAssembler loginClientAssembler,
                              JarandClientService jarandClientService,
-                             JarandClientAssembler jarandClientAssembler) {
+                             SecretClientAssembler secretClientAssembler,
+                             LoginClientAssembler loginClientAssembler) {
         this.repository = repository;
-        this.loginClientService = loginClientService;
-        this.loginClientAssembler = loginClientAssembler;
         this.jarandClientService = jarandClientService;
-        this.jarandClientAssembler = jarandClientAssembler;
+        this.secretClientAssembler = secretClientAssembler;
+        this.loginClientAssembler = loginClientAssembler;
     }
 
     public Optional<JarandUser> getUser(UUID id) {
@@ -37,10 +33,10 @@ public class JarandUserService {
     }
 
     public void createUser(JarandUser user, String password) {
+        final var secretClient = secretClientAssembler.assembleNew(user, password);
         final var loginClient = loginClientAssembler.assembleNew(user, password);
-        final var jarandClient = jarandClientAssembler.assembleNew(user, password);
         repository.createUser(user);
-        loginClientService.createClient(loginClient);
-        jarandClientService.createClient(jarandClient);
+        jarandClientService.createSecretClient(secretClient);
+        jarandClientService.createLoginClient(loginClient);
     }
 }
