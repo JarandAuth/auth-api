@@ -1,7 +1,7 @@
-package dev.jarand.authapi.jaranduser.jarandclient.rest.assembler;
+package dev.jarand.authapi.jarandclient.rest.assembler;
 
+import dev.jarand.authapi.jarandclient.domain.LoginClient;
 import dev.jarand.authapi.jaranduser.domain.JarandUser;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.LoginClient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +19,13 @@ public class LoginClientAssembler {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public LoginClient assembleNew(JarandUser jarandUser, String password) {
+    public LoginClient assembleNew(JarandUser user, String password) {
         return new LoginClient(
                 uuidSupplier.get().toString(),
                 "LOGIN",
-                jarandUser.getId(),
-                jarandUser.getTimeOfCreation(),
-                jarandUser.getUsername(),
+                user.getId(),
+                user.getTimeOfCreation(),
+                user.getUsername(),
                 passwordEncoder.encode(password));
     }
 }

@@ -1,4 +1,4 @@
-package dev.jarand.authapi.jaranduser.jarandclient.domain;
+package dev.jarand.authapi.jarandclient.domain;
 
 import java.time.Instant;
 import java.util.UUID;

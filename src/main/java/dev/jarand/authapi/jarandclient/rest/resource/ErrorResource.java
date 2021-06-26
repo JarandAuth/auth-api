@@ -1,4 +1,4 @@
-package dev.jarand.authapi.jaranduser.jarandclient.rest.resource;
+package dev.jarand.authapi.jarandclient.rest.resource;
 
 public class ErrorResource {
 

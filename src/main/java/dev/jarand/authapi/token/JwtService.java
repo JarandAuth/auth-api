@@ -1,6 +1,7 @@
 package dev.jarand.authapi.token;
 
-import dev.jarand.authapi.oauth.domain.RefreshTokenClaims;
+import dev.jarand.authapi.token.domain.AccessTokenClaims;
+import dev.jarand.authapi.token.domain.RefreshTokenClaims;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,19 @@ public class JwtService {
         return encodedJwt;
     }
 
+    public Optional<AccessTokenClaims> parseAccessToken(String accessToken) {
+        Claims jwtClaims;
+        try {
+            jwtClaims = Jwts.parser().setClock(clock).setSigningKey(publicKey).parseClaimsJws(accessToken).getBody();
+        } catch (JwtException ex) {
+            return Optional.empty();
+        }
+        if (!"ACCESS".equals(jwtClaims.get("type", String.class))) {
+            return Optional.empty();
+        }
+        return Optional.of(new AccessTokenClaims(jwtClaims.getSubject(), jwtClaims.get("scope", String.class)));
+    }
+
     public Optional<RefreshTokenClaims> parseRefreshToken(String refreshToken) {
         Claims jwtClaims;
         try {
@@ -70,11 +84,6 @@ public class JwtService {
         if (!"REFRESH".equals(jwtClaims.get("type", String.class))) {
             return Optional.empty();
         }
-        return Optional.of(new RefreshTokenClaims(
-                jwtClaims.getId(),
-                jwtClaims.getSubject(),
-                jwtClaims.getIssuedAt().toInstant(),
-                jwtClaims.getExpiration().toInstant(),
-                jwtClaims.get("scope", String.class)));
+        return Optional.of(new RefreshTokenClaims(jwtClaims.getId(), jwtClaims.getSubject(), jwtClaims.get("scope", String.class)));
     }
 }

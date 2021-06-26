@@ -1,11 +1,11 @@
-package dev.jarand.authapi.jaranduser.jarandclient;
+package dev.jarand.authapi.jarandclient;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
 import dev.jarand.authapi.grantedtype.domain.GrantedType;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.JarandClient;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.LoginClient;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.SecretClient;
-import dev.jarand.authapi.jaranduser.jarandclient.repository.JarandClientRepository;
+import dev.jarand.authapi.jarandclient.domain.JarandClient;
+import dev.jarand.authapi.jarandclient.domain.LoginClient;
+import dev.jarand.authapi.jarandclient.domain.SecretClient;
+import dev.jarand.authapi.jarandclient.repository.JarandClientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +21,10 @@ public class JarandClientService {
     public JarandClientService(JarandClientRepository repository, GrantedTypeService grantedTypeService) {
         this.repository = repository;
         this.grantedTypeService = grantedTypeService;
+    }
+
+    public List<JarandClient> getClients() {
+        return repository.getClients();
     }
 
     public Optional<JarandClient> getClient(String clientId) {

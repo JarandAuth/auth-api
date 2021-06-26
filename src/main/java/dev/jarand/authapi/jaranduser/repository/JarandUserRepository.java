@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +20,10 @@ public class JarandUserRepository {
 
     public JarandUserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<JarandUser> getUsers() {
+        return jdbcTemplate.query("SELECT id, email, username, display_name, time_of_creation FROM jarand_user", this::mapRow);
     }
 
     public Optional<JarandUser> getUser(UUID id) {

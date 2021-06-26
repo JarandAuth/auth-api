@@ -1,4 +1,4 @@
-package dev.jarand.authapi.jaranduser.jarandclient.rest.resource;
+package dev.jarand.authapi.jarandclient.rest.resource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import dev.jarand.authapi.grantedtype.resource.GrantedTypeResource;

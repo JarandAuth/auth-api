@@ -1,4 +1,4 @@
-package dev.jarand.authapi.common.security;
+package dev.jarand.authapi.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

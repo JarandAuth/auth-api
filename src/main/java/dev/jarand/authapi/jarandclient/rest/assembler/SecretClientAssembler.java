@@ -1,8 +1,8 @@
-package dev.jarand.authapi.jaranduser.jarandclient.rest.assembler;
+package dev.jarand.authapi.jarandclient.rest.assembler;
 
+import dev.jarand.authapi.jarandclient.domain.SecretClient;
+import dev.jarand.authapi.jarandclient.rest.resource.CreateJarandClientResource;
 import dev.jarand.authapi.jaranduser.domain.JarandUser;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.SecretClient;
-import dev.jarand.authapi.jaranduser.jarandclient.rest.resource.CreateJarandClientResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -32,12 +32,12 @@ public class SecretClientAssembler {
                 passwordEncoder.encode(resource.getClientSecret()));
     }
 
-    public SecretClient assembleNew(JarandUser jarandUser, String password) {
+    public SecretClient assembleNew(JarandUser user, String password) {
         return new SecretClient(
                 uuidSupplier.get().toString(),
                 "SECRET",
-                jarandUser.getId(),
-                jarandUser.getTimeOfCreation(),
+                user.getId(),
+                user.getTimeOfCreation(),
                 passwordEncoder.encode(password));
     }
 }

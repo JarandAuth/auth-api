@@ -2,8 +2,8 @@ package dev.jarand.authapi.oauth.rest;
 
 import dev.jarand.authapi.ApiTest;
 import dev.jarand.authapi.grantedtype.domain.GrantedType;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.LoginClient;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.SecretClient;
+import dev.jarand.authapi.jarandclient.domain.LoginClient;
+import dev.jarand.authapi.jarandclient.domain.SecretClient;
 import dev.jarand.authapi.oauth.rest.resource.TokenResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
