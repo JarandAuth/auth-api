@@ -4,10 +4,16 @@ import dev.jarand.authapi.scope.domain.ScopeConnection;
 import dev.jarand.authapi.scope.rest.resource.ScopeConnectionResource;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ScopeConnectionResourceAssembler {
 
     public ScopeConnectionResource assemble(ScopeConnection scopeConnection) {
         return new ScopeConnectionResource(scopeConnection.getScopeId(), scopeConnection.getClientId());
+    }
+
+    public List<ScopeConnectionResource> assemble(List<ScopeConnection> scopeConnections) {
+        return scopeConnections.stream().map(this::assemble).toList();
     }
 }

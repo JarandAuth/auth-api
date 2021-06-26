@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,6 +25,13 @@ public class ScopeConnectionRepository {
                 new MapSqlParameterSource()
                         .addValue("scope_id", scopeConnection.getScopeId())
                         .addValue("client_id", scopeConnection.getClientId()));
+    }
+
+    public List<ScopeConnection> get(String scopeId) {
+        return jdbcTemplate.query(
+                "SELECT scope_id, client_id FROM scope_connection WHERE scope_id = :scope_id",
+                new MapSqlParameterSource().addValue("scope_id", scopeId),
+                this::mapRow);
     }
 
     public Optional<ScopeConnection> get(String scopeId, String clientId) {

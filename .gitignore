@@ -28,3 +28,5 @@ target/
 # IntelliJ configuration
 .idea/
 *.iml
+
+src/main/resources/db/migration/V001_02__DATA.sql
