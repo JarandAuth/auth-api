@@ -1,7 +1,7 @@
 package dev.jarand.authapi.jarandclient;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
-import dev.jarand.authapi.grantedtype.domain.GrantedType;
+import dev.jarand.authapi.grantedtype.assembler.GrantedTypeAssembler;
 import dev.jarand.authapi.jarandclient.domain.JarandClient;
 import dev.jarand.authapi.jarandclient.domain.LoginClient;
 import dev.jarand.authapi.jarandclient.domain.SecretClient;
@@ -17,10 +17,12 @@ public class JarandClientService {
 
     private final JarandClientRepository repository;
     private final GrantedTypeService grantedTypeService;
+    private final GrantedTypeAssembler grantedTypeAssembler;
 
-    public JarandClientService(JarandClientRepository repository, GrantedTypeService grantedTypeService) {
+    public JarandClientService(JarandClientRepository repository, GrantedTypeService grantedTypeService, GrantedTypeAssembler grantedTypeAssembler) {
         this.repository = repository;
         this.grantedTypeService = grantedTypeService;
+        this.grantedTypeAssembler = grantedTypeAssembler;
     }
 
     public List<JarandClient> getClients() {
@@ -41,13 +43,13 @@ public class JarandClientService {
 
     public void createSecretClient(SecretClient client) {
         repository.createSecretClient(client);
-        grantedTypeService.create(new GrantedType("client_credentials", client.getClientId()));
-        grantedTypeService.create(new GrantedType("refresh_token", client.getClientId()));
+        grantedTypeService.create(grantedTypeAssembler.assembleNew("client_credentials", client.getClientId()));
+        grantedTypeService.create(grantedTypeAssembler.assembleNew("refresh_token", client.getClientId()));
     }
 
     public void createLoginClient(LoginClient client) {
         repository.createLoginClient(client);
-        grantedTypeService.create(new GrantedType("password", client.getClientId()));
-        grantedTypeService.create(new GrantedType("refresh_token", client.getClientId()));
+        grantedTypeService.create(grantedTypeAssembler.assembleNew("password", client.getClientId()));
+        grantedTypeService.create(grantedTypeAssembler.assembleNew("refresh_token", client.getClientId()));
     }
 }

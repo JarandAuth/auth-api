@@ -4,10 +4,12 @@ public class GrantedTypeResource {
 
     private final String grantType;
     private final String clientId;
+    private final String timeOfCreation;
 
-    public GrantedTypeResource(String grantType, String clientId) {
+    public GrantedTypeResource(String grantType, String clientId, String timeOfCreation) {
         this.grantType = grantType;
         this.clientId = clientId;
+        this.timeOfCreation = timeOfCreation;
     }
 
     public String getGrantType() {
@@ -16,5 +18,9 @@ public class GrantedTypeResource {
 
     public String getClientId() {
         return clientId;
+    }
+
+    public String getTimeOfCreation() {
+        return timeOfCreation;
     }
 }

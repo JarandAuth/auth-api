@@ -10,7 +10,7 @@ import java.util.List;
 public class ScopeConnectionResourceAssembler {
 
     public ScopeConnectionResource assemble(ScopeConnection scopeConnection) {
-        return new ScopeConnectionResource(scopeConnection.getScopeId(), scopeConnection.getClientId());
+        return new ScopeConnectionResource(scopeConnection.getScopeId(), scopeConnection.getClientId(), scopeConnection.getTimeOfCreation().toString());
     }
 
     public List<ScopeConnectionResource> assemble(List<ScopeConnection> scopeConnections) {
