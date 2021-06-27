@@ -40,6 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(GET, "/scope/{id}/connection").access("hasAnyAuthority('Auth.ViewScopes', 'Auth.ManageScopes', 'Auth.Admin')")
                 .mvcMatchers(GET, "/scope/{id}/connection/{clientId}").access("hasAnyAuthority('Auth.ViewScopes', 'Auth.ManageScopes', 'Auth.Admin')")
                 .mvcMatchers(POST, "/scope/{id}/connection").access("hasAnyAuthority('Auth.ManageScopes', 'Auth.Admin')")
+                .mvcMatchers(GET, "/refresh-token").access("hasAnyAuthority('Auth.ViewTokens', 'Auth.Admin')")
+                .mvcMatchers(GET, "/token-data").authenticated()
                 .anyRequest().authenticated().and()
                 .sessionManagement().sessionCreationPolicy(STATELESS).and()
                 .csrf().disable()

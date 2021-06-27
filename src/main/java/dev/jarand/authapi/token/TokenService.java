@@ -2,6 +2,7 @@ package dev.jarand.authapi.token;
 
 import dev.jarand.authapi.oauth.domain.Tokens;
 import dev.jarand.authapi.token.domain.AccessTokenClaims;
+import dev.jarand.authapi.token.domain.RefreshToken;
 import dev.jarand.authapi.token.domain.RefreshTokenClaims;
 import dev.jarand.authapi.token.repository.TokenRepository;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -66,6 +68,10 @@ public class TokenService {
 
     public Optional<RefreshTokenClaims> parseRefreshToken(String refreshToken) {
         return jwtService.parseRefreshToken(refreshToken);
+    }
+
+    public List<RefreshToken> getRefreshTokens() {
+        return tokenRepository.getRefreshTokens();
     }
 
     public boolean isRefreshTokenRegistered(String jti) {

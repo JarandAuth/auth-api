@@ -25,11 +25,11 @@ CREATE TABLE grant_type
 );
 
 INSERT INTO grant_type(grant_type, time_of_creation)
-VALUES ('client_credentials', (now() AT TIME ZONE 'UTC'));
+VALUES ('client_credentials', to_char(now()::timestamp at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'));
 INSERT INTO grant_type(grant_type, time_of_creation)
-VALUES ('refresh_token', (now() AT TIME ZONE 'UTC'));
+VALUES ('refresh_token', to_char(now()::timestamp at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'));
 INSERT INTO grant_type(grant_type, time_of_creation)
-VALUES ('password', (now() AT TIME ZONE 'UTC'));
+VALUES ('password', to_char(now()::timestamp at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"'));
 
 CREATE TABLE granted_type
 (
