@@ -1,6 +1,6 @@
 package dev.jarand.authapi.jaranduser.rest.resource;
 
-import dev.jarand.authapi.jaranduser.jarandclient.rest.resource.JarandClientResource;
+import dev.jarand.authapi.jarandclient.rest.resource.JarandClientResource;
 
 import java.util.List;
 

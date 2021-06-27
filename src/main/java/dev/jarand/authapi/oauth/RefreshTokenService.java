@@ -1,8 +1,8 @@
 package dev.jarand.authapi.oauth;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
-import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.SecretClient;
+import dev.jarand.authapi.jarandclient.JarandClientService;
+import dev.jarand.authapi.jarandclient.domain.SecretClient;
 import dev.jarand.authapi.oauth.domain.RefreshTokenParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
 import dev.jarand.authapi.scope.ScopeConnectionService;

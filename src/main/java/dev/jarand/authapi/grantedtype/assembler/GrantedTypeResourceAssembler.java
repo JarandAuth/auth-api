@@ -13,7 +13,7 @@ public class GrantedTypeResourceAssembler {
         return grantedTypes.stream().map(this::assemble).toList();
     }
 
-    private GrantedTypeResource assemble(GrantedType grantedType) {
-        return new GrantedTypeResource(grantedType.getGrantType(), grantedType.getClientId());
+    public GrantedTypeResource assemble(GrantedType grantedType) {
+        return new GrantedTypeResource(grantedType.getGrantType(), grantedType.getClientId(), grantedType.getTimeOfCreation().toString());
     }
 }

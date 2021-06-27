@@ -1,10 +1,12 @@
 package dev.jarand.authapi.jaranduser.rest.assembler;
 
+import dev.jarand.authapi.jarandclient.JarandClientService;
+import dev.jarand.authapi.jarandclient.rest.assembler.JarandClientResourceAssembler;
 import dev.jarand.authapi.jaranduser.domain.JarandUser;
-import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
-import dev.jarand.authapi.jaranduser.jarandclient.rest.assembler.JarandClientResourceAssembler;
 import dev.jarand.authapi.jaranduser.rest.resource.JarandUserResource;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class JarandUserResourceAssembler {
@@ -18,13 +20,17 @@ public class JarandUserResourceAssembler {
         this.jarandClientResourceAssembler = jarandClientResourceAssembler;
     }
 
-    public JarandUserResource assemble(JarandUser jarandUser) {
+    public JarandUserResource assemble(JarandUser user) {
         return new JarandUserResource(
-                jarandUser.getId().toString(),
-                jarandUser.getEmail(),
-                jarandUser.getUsername(),
-                jarandUser.getDisplayName(),
-                jarandUser.getTimeOfCreation().toString(),
-                jarandClientResourceAssembler.assemble(jarandClientService.getClients(jarandUser.getId())));
+                user.getId().toString(),
+                user.getEmail(),
+                user.getUsername(),
+                user.getDisplayName(),
+                user.getTimeOfCreation().toString(),
+                jarandClientResourceAssembler.assemble(jarandClientService.getClients(user.getId())));
+    }
+
+    public List<JarandUserResource> assemble(List<JarandUser> users) {
+        return users.stream().map(this::assemble).toList();
     }
 }

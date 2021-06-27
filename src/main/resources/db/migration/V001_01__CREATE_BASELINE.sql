@@ -33,8 +33,9 @@ VALUES ('password', (now() AT TIME ZONE 'UTC'));
 
 CREATE TABLE granted_type
 (
-    grant_type VARCHAR NOT NULL REFERENCES grant_type (grant_type),
-    client_id  VARCHAR NOT NULL,
+    grant_type       VARCHAR NOT NULL REFERENCES grant_type (grant_type),
+    client_id        VARCHAR NOT NULL REFERENCES jarand_client (client_id),
+    time_of_creation VARCHAR NOT NULL,
     PRIMARY KEY (grant_type, client_id)
 );
 
@@ -47,14 +48,15 @@ CREATE TABLE scope
 
 CREATE TABLE scope_connection
 (
-    scope_id  VARCHAR NOT NULL REFERENCES scope (id),
-    client_id VARCHAR NOT NULL,
+    scope_id         VARCHAR NOT NULL REFERENCES scope (id),
+    client_id        VARCHAR NOT NULL REFERENCES jarand_client (client_id),
+    time_of_creation VARCHAR NOT NULL,
     PRIMARY KEY (scope_id, client_id)
 );
 
 CREATE TABLE refresh_token
 (
     jti       VARCHAR NOT NULL UNIQUE,
-    subject   VARCHAR NOT NULL,
+    subject   VARCHAR NOT NULL REFERENCES jarand_client (client_id),
     issued_at VARCHAR NOT NULL
 );

@@ -64,4 +64,17 @@ public class ScopeController {
         scopeConnectionService.create(scopeConnection);
         return ResponseEntity.ok(scopeConnectionResourceAssembler.assemble(scopeConnection));
     }
+
+    @GetMapping("{id}/connection")
+    public ResponseEntity<List<ScopeConnectionResource>> getScopeConnections(@PathVariable String id) {
+        return ResponseEntity.ok(scopeConnectionResourceAssembler.assemble(scopeConnectionService.get(id)));
+    }
+
+    @GetMapping("{id}/connection/{clientId}")
+    public ResponseEntity<ScopeConnectionResource> getScopeConnection(@PathVariable String id, @PathVariable String clientId) {
+        return scopeConnectionService.get(id, clientId)
+                .map(scopeConnectionResourceAssembler::assemble)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

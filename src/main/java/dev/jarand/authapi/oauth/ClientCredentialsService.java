@@ -1,8 +1,8 @@
 package dev.jarand.authapi.oauth;
 
 import dev.jarand.authapi.grantedtype.GrantedTypeService;
-import dev.jarand.authapi.jaranduser.jarandclient.JarandClientService;
-import dev.jarand.authapi.jaranduser.jarandclient.domain.SecretClient;
+import dev.jarand.authapi.jarandclient.JarandClientService;
+import dev.jarand.authapi.jarandclient.domain.SecretClient;
 import dev.jarand.authapi.oauth.domain.ClientCredentialsParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
 import dev.jarand.authapi.scope.ScopeConnectionService;
@@ -52,8 +52,8 @@ public class ClientCredentialsService {
             logger.info("Cancelling client credentials flow (not secret client) for clientId: {}", clientId);
             return Optional.empty();
         }
-        final var jarandClient = (SecretClient) client;
-        if (!passwordEncoder.matches(clientSecret, jarandClient.getClientSecret())) {
+        final var secretClient = (SecretClient) client;
+        if (!passwordEncoder.matches(clientSecret, secretClient.getClientSecret())) {
             logger.info("Cancelling client credentials flow (secret mismatch) for clientId: {}", clientId);
             return Optional.empty();
         }
