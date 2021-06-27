@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("jarand-client")
@@ -45,8 +47,9 @@ public class JarandClientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<JarandClientResource>> getClients() {
-        return ResponseEntity.ok(resourceAssembler.assemble(service.getClients()));
+    public ResponseEntity<List<JarandClientResource>> getClients(@RequestParam("ownerId") Optional<UUID> ownerId) {
+        return ownerId.map(uuid -> ResponseEntity.ok(resourceAssembler.assemble(service.getClients(uuid))))
+                .orElseGet(() -> ResponseEntity.ok(resourceAssembler.assemble(service.getClients())));
     }
 
     @GetMapping("{clientId}")

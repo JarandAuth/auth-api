@@ -74,6 +74,10 @@ public class TokenService {
         return tokenRepository.getRefreshTokens();
     }
 
+    public List<RefreshToken> getRefreshTokens(String subject) {
+        return tokenRepository.getRefreshTokens(subject);
+    }
+
     public boolean isRefreshTokenRegistered(String jti) {
         return tokenRepository.exists(jti);
     }

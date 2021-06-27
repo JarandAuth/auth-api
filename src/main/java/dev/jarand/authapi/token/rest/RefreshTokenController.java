@@ -6,9 +6,11 @@ import dev.jarand.authapi.token.resource.RefreshTokenResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("refresh-token")
@@ -23,7 +25,8 @@ public class RefreshTokenController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RefreshTokenResource>> getRefreshTokens() {
-        return ResponseEntity.ok(resourceAssembler.assemble(tokenService.getRefreshTokens()));
+    public ResponseEntity<List<RefreshTokenResource>> getRefreshTokens(@RequestParam("subject") Optional<String> optionalSubject) {
+        return optionalSubject.map(subject -> ResponseEntity.ok(resourceAssembler.assemble(tokenService.getRefreshTokens(subject))))
+                .orElseGet(() -> ResponseEntity.ok(resourceAssembler.assemble(tokenService.getRefreshTokens())));
     }
 }

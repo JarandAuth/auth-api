@@ -32,6 +32,10 @@ public class TokenRepository {
         return jdbcTemplate.query("SELECT jti, subject, issued_at FROM refresh_token", this::mapRow);
     }
 
+    public List<RefreshToken> getRefreshTokens(String subject) {
+        return jdbcTemplate.query("SELECT jti, subject, issued_at FROM refresh_token WHERE subject = :subject", new MapSqlParameterSource("subject", subject), this::mapRow);
+    }
+
     public boolean exists(String jti) {
         final var count = jdbcTemplate.queryForObject("SELECT count(jti) FROM refresh_token WHERE jti = :jti", new MapSqlParameterSource("jti", jti), Integer.class);
         return count != null && count == 1;

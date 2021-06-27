@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(POST, "/grant-type").access("hasAnyAuthority('Auth.ManageGrantTypes', 'Auth.Admin')")
                 .mvcMatchers(GET, "/grant-type").access("hasAnyAuthority('Auth.ViewGrantTypes', 'Auth.ManageGrantTypes', 'Auth.Admin')")
                 .mvcMatchers(GET, "/grant-type/{grantType}").access("hasAnyAuthority('Auth.ViewGrantTypes', 'Auth.ManageGrantTypes', 'Auth.Admin')")
+                .mvcMatchers(GET, "/granted-type").access("hasAnyAuthority('Auth.ViewGrantTypes', 'Auth.ManageGrantTypes','Auth.Admin')")
                 .mvcMatchers(POST, "/granted-type").access("hasAnyAuthority('Auth.ManageGrantTypes', 'Auth.Admin')")
                 .mvcMatchers(GET, "/scope").access("hasAnyAuthority('Auth.ViewScopes', 'Auth.ManageScopes', 'Auth.Admin')")
                 .mvcMatchers(GET, "/scope/{id}").access("hasAnyAuthority('Auth.ViewScopes', 'Auth.ManageScopes', 'Auth.Admin')")
