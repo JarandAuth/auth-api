@@ -20,8 +20,8 @@ public class GrantedTypeService {
         repository.create(grantedType);
     }
 
-    public List<GrantedType> get(String jarandClientId) {
-        return repository.get(jarandClientId);
+    public List<GrantedType> get(String clientId) {
+        return repository.get(clientId);
     }
 
     public Optional<GrantedType> get(String grantType, String clientId) {

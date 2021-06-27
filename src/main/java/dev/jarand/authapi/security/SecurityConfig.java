@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.savedrequest.RequestCacheAwareFilter;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -25,21 +25,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers(GET, "/jarand-user").access("hasRole('Auth.ViewUsers') or hasRole('Auth.ManageUsers') or hasRole('Auth.Admin')")
-                .mvcMatchers(GET, "/jarand-user/{id}").access("hasRole('Auth.ViewUsers') or hasRole('Auth.ManageUsers') or hasRole('Auth.Admin')")
-                .mvcMatchers(POST, "/jarand-client").access("hasRole('Auth.ManageClients') or hasRole('Auth.Admin')")
-                .mvcMatchers(GET, "/jarand-client").access("hasRole('Auth.ViewClients') or hasRole('Auth.ManageClients') or hasRole('Auth.Admin')")
-                .mvcMatchers(GET, "/jarand-client/{clientId}").access("hasRole('Auth.ViewClients') or hasRole('Auth.ManageClients') or hasRole('Auth.Admin')")
-                .mvcMatchers(GET, "/scope").access("hasRole('Auth.ViewScopes') or hasRole('Auth.ManageScopes') or hasRole('Auth.Admin')")
-                .mvcMatchers(GET, "/scope/{id}").access("hasRole('Auth.ViewScopes') or hasRole('Auth.ManageScopes') or hasRole('Auth.Admin')")
-                .mvcMatchers(POST, "/scope").access("hasRole('Auth.ManageScopes') or hasRole('Auth.Admin')")
-                .mvcMatchers(GET, "/scope/{id}/connection").access("hasRole('Auth.ViewScopes') or hasRole('Auth.ManageScopes') or hasRole('Auth.Admin')")
-                .mvcMatchers(GET, "/scope/{id}/connection/{clientId}").access("hasRole('Auth.ViewScopes') or hasRole('Auth.ManageScopes') or hasRole('Auth.Admin')")
-                .mvcMatchers(POST, "/scope/{id}/connection").access("hasRole('Auth.ManageScopes') or hasRole('Auth.Admin')")
+                .mvcMatchers(GET, "/jarand-user").access("hasAnyAuthority('Auth.ViewUsers', 'Auth.ManageUsers', 'Auth.Admin')")
+                .mvcMatchers(GET, "/jarand-user/{id}").access("hasAnyAuthority('Auth.ViewUsers', 'Auth.ManageUsers', 'Auth.Admin')")
+                .mvcMatchers(POST, "/jarand-client").access("hasAnyAuthority('Auth.ManageClients', 'Auth.Admin')")
+                .mvcMatchers(GET, "/jarand-client").access("hasAnyAuthority('Auth.ViewClients', 'Auth.ManageClients', 'Auth.Admin')")
+                .mvcMatchers(GET, "/jarand-client/{clientId}").access("hasAnyAuthority('Auth.ViewClients', 'Auth.ManageClients', 'Auth.Admin')")
+                .mvcMatchers(POST, "/grant-type").access("hasAnyAuthority('Auth.ManageGrantTypes', 'Auth.Admin')")
+                .mvcMatchers(GET, "/grant-type").access("hasAnyAuthority('Auth.ViewGrantTypes', 'Auth.ManageGrantTypes', 'Auth.Admin')")
+                .mvcMatchers(GET, "/grant-type/{grantType}").access("hasAnyAuthority('Auth.ViewGrantTypes', 'Auth.ManageGrantTypes', 'Auth.Admin')")
+                .mvcMatchers(POST, "/granted-type").access("hasAnyAuthority('Auth.ManageGrantTypes', 'Auth.Admin')")
+                .mvcMatchers(GET, "/scope").access("hasAnyAuthority('Auth.ViewScopes', 'Auth.ManageScopes', 'Auth.Admin')")
+                .mvcMatchers(GET, "/scope/{id}").access("hasAnyAuthority('Auth.ViewScopes', 'Auth.ManageScopes', 'Auth.Admin')")
+                .mvcMatchers(POST, "/scope").access("hasAnyAuthority('Auth.ManageScopes', 'Auth.Admin')")
+                .mvcMatchers(GET, "/scope/{id}/connection").access("hasAnyAuthority('Auth.ViewScopes', 'Auth.ManageScopes', 'Auth.Admin')")
+                .mvcMatchers(GET, "/scope/{id}/connection/{clientId}").access("hasAnyAuthority('Auth.ViewScopes', 'Auth.ManageScopes', 'Auth.Admin')")
+                .mvcMatchers(POST, "/scope/{id}/connection").access("hasAnyAuthority('Auth.ManageScopes', 'Auth.Admin')")
                 .anyRequest().authenticated().and()
                 .sessionManagement().sessionCreationPolicy(STATELESS).and()
                 .csrf().disable()
-                .addFilterBefore(new BearerAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new BearerAuthenticationFilter(tokenService), RequestCacheAwareFilter.class);
 
     }
 

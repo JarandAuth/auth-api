@@ -1,5 +1,5 @@
 package dev.jarand.authapi.oauth.domain;
 
-public enum GrantType {
+public enum GrantTypeParameter {
     CLIENT_CREDENTIALS, REFRESH_TOKEN, PASSWORD, UNKNOWN
 }

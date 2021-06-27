@@ -48,7 +48,7 @@ public class BearerAuthenticationFilter implements Filter {
         final var optionalScopeClaim = claims.getScope();
         if (optionalScopeClaim.isPresent()) {
             final var scopes = List.of(optionalScopeClaim.get().split(" "));
-            authorities.addAll(scopes.stream().map(scope -> new SimpleGrantedAuthority("ROLE_" + scope)).toList());
+            authorities.addAll(scopes.stream().map(SimpleGrantedAuthority::new).toList());
         }
         final var authentication = new UsernamePasswordAuthenticationToken(clientId, null, authorities);
         final var securityContext = SecurityContextHolder.getContext();

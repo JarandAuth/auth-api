@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.Optional;
 
-import static dev.jarand.authapi.oauth.domain.GrantType.*;
+import static dev.jarand.authapi.oauth.domain.GrantTypeParameter.*;
 
 @RestController
 @RequestMapping("oauth")
