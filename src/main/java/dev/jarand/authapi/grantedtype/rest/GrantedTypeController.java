@@ -36,6 +36,6 @@ public class GrantedTypeController {
     @GetMapping
     public ResponseEntity<List<GrantedTypeResource>> getGrantedTypes(@RequestParam("clientId") Optional<String> optionalClientId) {
         return optionalClientId.map(clientId -> ResponseEntity.ok(resourceAssembler.assemble(service.get(clientId))))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+                .orElseGet(() -> ResponseEntity.ok(resourceAssembler.assemble(service.get())));
     }
 }

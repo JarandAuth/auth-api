@@ -20,6 +20,10 @@ public class GrantedTypeService {
         repository.create(grantedType);
     }
 
+    public List<GrantedType> get() {
+        return repository.get();
+    }
+
     public List<GrantedType> get(String clientId) {
         return repository.get(clientId);
     }

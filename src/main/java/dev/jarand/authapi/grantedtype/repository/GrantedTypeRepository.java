@@ -29,6 +29,10 @@ public class GrantedTypeRepository {
                         .addValue("time_of_creation", grantedType.getTimeOfCreation().toString()));
     }
 
+    public List<GrantedType> get() {
+        return jdbcTemplate.query("SELECT grant_type, client_id, time_of_creation FROM granted_type", this::mapRow);
+    }
+
     public List<GrantedType> get(String clientId) {
         return jdbcTemplate.query("SELECT grant_type, client_id, time_of_creation FROM granted_type WHERE client_id = :client_id",
                 new MapSqlParameterSource().addValue("client_id", clientId),
