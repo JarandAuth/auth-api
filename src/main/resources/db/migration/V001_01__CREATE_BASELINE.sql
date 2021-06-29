@@ -18,6 +18,8 @@ CREATE TABLE jarand_client
     password         VARCHAR
 );
 
+CREATE INDEX idx_jarand_client_owner_id ON jarand_client (owner_id);
+
 CREATE TABLE grant_type
 (
     grant_type       VARCHAR PRIMARY KEY,
@@ -39,6 +41,9 @@ CREATE TABLE granted_type
     PRIMARY KEY (grant_type, client_id)
 );
 
+CREATE INDEX idx_granted_type_grant_type ON granted_type (grant_type);
+CREATE INDEX idx_granted_type_client_id ON granted_type (client_id);
+
 CREATE TABLE scope
 (
     id               VARCHAR PRIMARY KEY,
@@ -53,6 +58,9 @@ CREATE TABLE scope_connection
     time_of_creation VARCHAR NOT NULL,
     PRIMARY KEY (scope_id, client_id)
 );
+
+CREATE INDEX idx_scope_connection_scope_id ON scope_connection (scope_id);
+CREATE INDEX idx_scope_connection_client_id ON scope_connection (client_id);
 
 CREATE TABLE refresh_token
 (
