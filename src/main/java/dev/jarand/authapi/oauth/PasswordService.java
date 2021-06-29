@@ -4,7 +4,7 @@ import dev.jarand.authapi.grantedtype.GrantedTypeService;
 import dev.jarand.authapi.jarandclient.JarandClientService;
 import dev.jarand.authapi.oauth.domain.PasswordParameters;
 import dev.jarand.authapi.oauth.domain.Tokens;
-import dev.jarand.authapi.scope.ScopeConnectionService;
+import dev.jarand.authapi.scopeconnection.ScopeConnectionService;
 import dev.jarand.authapi.token.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

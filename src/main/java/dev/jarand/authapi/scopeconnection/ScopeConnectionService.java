@@ -1,7 +1,7 @@
-package dev.jarand.authapi.scope;
+package dev.jarand.authapi.scopeconnection;
 
-import dev.jarand.authapi.scope.domain.ScopeConnection;
-import dev.jarand.authapi.scope.repository.ScopeConnectionRepository;
+import dev.jarand.authapi.scopeconnection.domain.ScopeConnection;
+import dev.jarand.authapi.scopeconnection.repository.ScopeConnectionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +20,19 @@ public class ScopeConnectionService {
         repository.create(scopeConnection);
     }
 
-    public List<ScopeConnection> get(String scopeId) {
-        return repository.get(scopeId);
-    }
-
     public Optional<ScopeConnection> get(String scopeId, String clientId) {
         return repository.get(scopeId, clientId);
+    }
+
+    public List<ScopeConnection> get() {
+        return repository.get();
+    }
+
+    public List<ScopeConnection> getByScopeId(String scopeId) {
+        return repository.getByScopeId(scopeId);
+    }
+
+    public List<ScopeConnection> getByClientId(String clientId) {
+        return repository.getByClientId(clientId);
     }
 }

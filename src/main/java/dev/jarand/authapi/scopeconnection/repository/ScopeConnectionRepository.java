@@ -1,6 +1,6 @@
-package dev.jarand.authapi.scope.repository;
+package dev.jarand.authapi.scopeconnection.repository;
 
-import dev.jarand.authapi.scope.domain.ScopeConnection;
+import dev.jarand.authapi.scopeconnection.domain.ScopeConnection;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -29,13 +29,6 @@ public class ScopeConnectionRepository {
                         .addValue("time_of_creation", scopeConnection.getTimeOfCreation().toString()));
     }
 
-    public List<ScopeConnection> get(String scopeId) {
-        return jdbcTemplate.query(
-                "SELECT scope_id, client_id, time_of_creation FROM scope_connection WHERE scope_id = :scope_id",
-                new MapSqlParameterSource().addValue("scope_id", scopeId),
-                this::mapRow);
-    }
-
     public Optional<ScopeConnection> get(String scopeId, String clientId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
@@ -45,6 +38,24 @@ public class ScopeConnectionRepository {
         } catch (IncorrectResultSizeDataAccessException ex) {
             return Optional.empty();
         }
+    }
+
+    public List<ScopeConnection> get() {
+        return jdbcTemplate.query("SELECT scope_id, client_id, time_of_creation FROM scope_connection", this::mapRow);
+    }
+
+    public List<ScopeConnection> getByScopeId(String scopeId) {
+        return jdbcTemplate.query(
+                "SELECT scope_id, client_id, time_of_creation FROM scope_connection WHERE scope_id = :scope_id",
+                new MapSqlParameterSource().addValue("scope_id", scopeId),
+                this::mapRow);
+    }
+
+    public List<ScopeConnection> getByClientId(String clientId) {
+        return jdbcTemplate.query(
+                "SELECT scope_id, client_id, time_of_creation FROM scope_connection WHERE client_id = :client_id",
+                new MapSqlParameterSource().addValue("client_id", clientId),
+                this::mapRow);
     }
 
     private ScopeConnection mapRow(ResultSet resultSet, int rowNum) throws SQLException {

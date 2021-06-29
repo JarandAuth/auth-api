@@ -1,4 +1,4 @@
-package dev.jarand.authapi.scope.domain;
+package dev.jarand.authapi.scopeconnection.domain;
 
 import java.time.Instant;
 
