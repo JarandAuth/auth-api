@@ -1,4 +1,4 @@
-package dev.jarand.authapi.scope.rest.resource;
+package dev.jarand.authapi.scope.resource;
 
 import javax.validation.constraints.NotNull;
 

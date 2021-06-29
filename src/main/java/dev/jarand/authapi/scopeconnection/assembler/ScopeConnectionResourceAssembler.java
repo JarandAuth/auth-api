@@ -1,7 +1,7 @@
-package dev.jarand.authapi.scope.rest.assembler;
+package dev.jarand.authapi.scopeconnection.assembler;
 
-import dev.jarand.authapi.scope.domain.ScopeConnection;
-import dev.jarand.authapi.scope.rest.resource.ScopeConnectionResource;
+import dev.jarand.authapi.scopeconnection.domain.ScopeConnection;
+import dev.jarand.authapi.scopeconnection.resource.ScopeConnectionResource;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

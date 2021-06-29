@@ -1,4 +1,4 @@
-package dev.jarand.authapi.scope.rest.resource;
+package dev.jarand.authapi.scopeconnection.resource;
 
 public class ScopeConnectionResource {
 
