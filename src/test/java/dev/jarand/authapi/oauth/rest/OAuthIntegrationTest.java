@@ -159,34 +159,6 @@ class OAuthIntegrationTest extends ApiTest {
     }
 
     @Test
-    void POST_token_for_refresh_token_flow_without_client_id_should_return_error() throws Exception {
-        final var mvcResult = mockMvc.perform(
-                post("/oauth/token")
-                        .param("grant_type", "refresh_token")
-                        .param("client_secret", "wrongSecret")
-                        .param("refresh_token", "someRefreshToken"))
-                .andExpect(status().isBadRequest()).andReturn();
-
-        final var actualJson = mvcResult.getResponse().getContentAsString();
-        final var expectedJson = fileAsString("/token/refresh-token/missing-client-id.json");
-        JSONAssert.assertEquals(expectedJson, actualJson, true);
-    }
-
-    @Test
-    void POST_token_for_refresh_token_flow_without_client_secret_should_return_error() throws Exception {
-        final var mvcResult = mockMvc.perform(
-                post("/oauth/token")
-                        .param("grant_type", "refresh_token")
-                        .param("client_id", "wrongId")
-                        .param("refresh_token", "someRefreshToken"))
-                .andExpect(status().isBadRequest()).andReturn();
-
-        final var actualJson = mvcResult.getResponse().getContentAsString();
-        final var expectedJson = fileAsString("/token/refresh-token/missing-client-secret.json");
-        JSONAssert.assertEquals(expectedJson, actualJson, true);
-    }
-
-    @Test
     void POST_token_for_refresh_token_flow_without_refresh_token_secret_should_return_error() throws Exception {
         final var mvcResult = mockMvc.perform(
                 post("/oauth/token")

@@ -35,11 +35,11 @@ public class RequestParametersValidator {
                 final var clientId = requestParams.get("client_id");
                 final var clientSecret = requestParams.get("client_secret");
                 final var refreshToken = requestParams.get("refresh_token");
-                if (clientId == null || clientSecret == null || refreshToken == null) {
+                if (refreshToken == null) {
                     return RequestParameters.refreshToken(
                             INVALID,
                             null,
-                            new OAuthError("invalid_request", "Missing 'client_id' or 'client_secret' or 'refresh_token' parameter required for the 'refresh_token' grant type"));
+                            new OAuthError("invalid_request", "Missing 'refresh_token' parameter required for the 'refresh_token' grant type"));
                 }
                 return RequestParameters.refreshToken(VALID, new RefreshTokenParameters(clientId, clientSecret, refreshToken), null);
             }
