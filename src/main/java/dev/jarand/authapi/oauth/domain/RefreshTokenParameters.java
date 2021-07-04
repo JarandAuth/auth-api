@@ -1,5 +1,7 @@
 package dev.jarand.authapi.oauth.domain;
 
+import java.util.Optional;
+
 public class RefreshTokenParameters {
 
     private final String clientId;
@@ -12,12 +14,12 @@ public class RefreshTokenParameters {
         this.refreshToken = refreshToken;
     }
 
-    public String getClientId() {
-        return clientId;
+    public Optional<String> getClientId() {
+        return Optional.ofNullable(clientId);
     }
 
-    public String getClientSecret() {
-        return clientSecret;
+    public Optional<String> getClientSecret() {
+        return Optional.ofNullable(clientSecret);
     }
 
     public String getRefreshToken() {

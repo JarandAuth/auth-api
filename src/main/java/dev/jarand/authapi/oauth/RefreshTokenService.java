@@ -39,9 +39,18 @@ public class RefreshTokenService {
     }
 
     public Optional<Tokens> handle(RefreshTokenParameters parameters) {
-        final var clientId = parameters.getClientId();
-        final var clientSecret = parameters.getClientSecret();
-        logger.info("Performing refresh token flow for clientId: {}", clientId);
+        logger.info("Performing refresh token flow");
+        final var optionalRefreshTokenClaims = tokenService.parseRefreshToken(parameters.getRefreshToken());
+        if (optionalRefreshTokenClaims.isEmpty()) {
+            logger.info("Cancelling refresh token flow (token parsing failed)");
+            return Optional.empty();
+        }
+        final var refreshTokenClaims = optionalRefreshTokenClaims.get();
+        final var clientId = refreshTokenClaims.getSubject();
+        if (!tokenService.isRefreshTokenRegistered(refreshTokenClaims.getJti())) {
+            logger.info("Cancelling refresh token flow (refresh token not registered) for clientId: {}", clientId);
+            return Optional.empty();
+        }
         final var optionalClient = jarandClientService.getClient(clientId);
         if (optionalClient.isEmpty()) {
             logger.info("Cancelling refresh token flow (client not found) for clientId: {}", clientId);
@@ -50,27 +59,14 @@ public class RefreshTokenService {
         final var client = optionalClient.get();
         if ("SECRET".equals(client.getType())) {
             final var secretClient = (SecretClient) client;
-            if (!passwordEncoder.matches(clientSecret, secretClient.getClientSecret())) {
+            final var clientSecretParameter = parameters.getClientSecret().orElseThrow(() -> new IllegalStateException("Secret client without secret"));
+            if (!passwordEncoder.matches(clientSecretParameter, secretClient.getClientSecret())) {
                 logger.info("Cancelling refresh token flow (secret mismatch) for clientId: {}", clientId);
                 return Optional.empty();
             }
         }
         if (grantedTypeService.get("refresh_token", clientId).isEmpty()) {
             logger.info("Cancelling refresh token flow (unauthorized client) for clientId: {}", clientId);
-            return Optional.empty();
-        }
-        final var optionalRefreshTokenClaims = tokenService.parseRefreshToken(parameters.getRefreshToken());
-        if (optionalRefreshTokenClaims.isEmpty()) {
-            logger.info("Cancelling refresh token flow (token parsing failed) for clientId: {}", clientId);
-            return Optional.empty();
-        }
-        final var refreshTokenClaims = optionalRefreshTokenClaims.get();
-        if (!refreshTokenClaims.getSubject().equals(clientId)) {
-            logger.info("Cancelling refresh token flow (subject mismatch) for clientId: {}", clientId);
-            return Optional.empty();
-        }
-        if (!tokenService.isRefreshTokenRegistered(refreshTokenClaims.getJti())) {
-            logger.info("Cancelling refresh token flow (refresh token not registered) for clientId: {}", clientId);
             return Optional.empty();
         }
         final var optionalScope = refreshTokenClaims.getScope().map(scopeParam -> {
