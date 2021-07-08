@@ -25,13 +25,13 @@ public class JarandClientRepository {
     }
 
     public List<JarandClient> getClients() {
-        return jdbcTemplate.query("SELECT client_id, type, owner_id, time_of_creation, client_secret, username, password FROM jarand_client", this::mapRow);
+        return jdbcTemplate.query("SELECT client_id, type, display_name, owner_id, time_of_creation, client_secret, username, password FROM jarand_client", this::mapRow);
     }
 
     public Optional<JarandClient> getClient(String clientId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT client_id, type, owner_id, time_of_creation, client_secret, username, password FROM jarand_client WHERE client_id = :client_id",
+                    "SELECT client_id, type, display_name, owner_id, time_of_creation, client_secret, username, password FROM jarand_client WHERE client_id = :client_id",
                     new MapSqlParameterSource("client_id", clientId),
                     this::mapRow));
         } catch (IncorrectResultSizeDataAccessException ex) {
@@ -42,7 +42,7 @@ public class JarandClientRepository {
     public Optional<LoginClient> getLoginClient(String username) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT client_id, type, owner_id, time_of_creation, client_secret, username, password FROM jarand_client WHERE username = :username",
+                    "SELECT client_id, type, display_name, owner_id, time_of_creation, client_secret, username, password FROM jarand_client WHERE username = :username",
                     new MapSqlParameterSource("username", username),
                     this::mapLoginClientRow));
         } catch (IncorrectResultSizeDataAccessException ex) {
@@ -52,28 +52,30 @@ public class JarandClientRepository {
 
     public List<JarandClient> getClients(UUID ownerId) {
         return jdbcTemplate.query(
-                "SELECT client_id, type, owner_id, time_of_creation, client_secret, username, password FROM jarand_client WHERE owner_id = :owner_id",
+                "SELECT client_id, type, display_name, owner_id, time_of_creation, client_secret, username, password FROM jarand_client WHERE owner_id = :owner_id",
                 new MapSqlParameterSource("owner_id", ownerId),
                 this::mapRow);
     }
 
     public void createSecretClient(SecretClient client) {
-        jdbcTemplate.update("INSERT INTO jarand_client(client_id, type, owner_id, time_of_creation, client_secret) " +
-                        "VALUES (:client_id, :type, :owner_id, :time_of_creation, :client_secret)",
+        jdbcTemplate.update("INSERT INTO jarand_client(client_id, type, display_name, owner_id, time_of_creation, client_secret) " +
+                        "VALUES (:client_id, :type, :display_name, :owner_id, :time_of_creation, :client_secret)",
                 new MapSqlParameterSource()
                         .addValue("client_id", client.getClientId())
                         .addValue("type", "SECRET")
+                        .addValue("display_name", client.getDisplayName())
                         .addValue("owner_id", client.getOwnerId())
                         .addValue("time_of_creation", client.getTimeOfCreation().toString())
                         .addValue("client_secret", client.getClientSecret()));
     }
 
     public void createLoginClient(LoginClient client) {
-        jdbcTemplate.update("INSERT INTO jarand_client(client_id, type, owner_id, time_of_creation, username, password) " +
-                        "VALUES (:client_id, :type, :owner_id, :time_of_creation, :username, :password)",
+        jdbcTemplate.update("INSERT INTO jarand_client(client_id, type, display_name, owner_id, time_of_creation, username, password) " +
+                        "VALUES (:client_id, :type, :display_name, :owner_id, :time_of_creation, :username, :password)",
                 new MapSqlParameterSource()
                         .addValue("client_id", client.getClientId())
                         .addValue("type", "LOGIN")
+                        .addValue("display_name", client.getDisplayName())
                         .addValue("owner_id", client.getOwnerId())
                         .addValue("time_of_creation", client.getTimeOfCreation().toString())
                         .addValue("username", client.getUsername())
@@ -86,12 +88,14 @@ public class JarandClientRepository {
             case "SECRET" -> new SecretClient(
                     resultSet.getString("client_id"),
                     type,
+                    resultSet.getString("display_name"),
                     UUID.fromString(resultSet.getString("owner_id")),
                     Instant.parse(resultSet.getString("time_of_creation")),
                     resultSet.getString("client_secret"));
             case "LOGIN" -> new LoginClient(
                     resultSet.getString("client_id"),
                     type,
+                    resultSet.getString("display_name"),
                     UUID.fromString(resultSet.getString("owner_id")),
                     Instant.parse(resultSet.getString("time_of_creation")),
                     resultSet.getString("username"),
@@ -104,6 +108,7 @@ public class JarandClientRepository {
         return new LoginClient(
                 resultSet.getString("client_id"),
                 resultSet.getString("type"),
+                resultSet.getString("display_name"),
                 UUID.fromString(resultSet.getString("owner_id")),
                 Instant.parse(resultSet.getString("time_of_creation")),
                 resultSet.getString("username"),

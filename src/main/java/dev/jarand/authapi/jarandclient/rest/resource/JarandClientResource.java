@@ -9,6 +9,7 @@ import java.util.List;
 public class JarandClientResource {
 
     private final String clientId;
+    private final String displayName;
     private final String ownerId;
     private final String timeOfCreation;
     private final String clientSecret;
@@ -17,6 +18,7 @@ public class JarandClientResource {
     private final List<GrantedTypeResource> grantedTypes;
 
     public JarandClientResource(String clientId,
+                                String displayName,
                                 String ownerId,
                                 String timeOfCreation,
                                 String clientSecret,
@@ -24,6 +26,7 @@ public class JarandClientResource {
                                 String password,
                                 List<GrantedTypeResource> grantedTypes) {
         this.clientId = clientId;
+        this.displayName = displayName;
         this.ownerId = ownerId;
         this.timeOfCreation = timeOfCreation;
         this.clientSecret = clientSecret;
@@ -34,6 +37,10 @@ public class JarandClientResource {
 
     public String getClientId() {
         return clientId;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public String getOwnerId() {

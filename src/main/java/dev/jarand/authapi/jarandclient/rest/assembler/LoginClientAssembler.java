@@ -23,6 +23,7 @@ public class LoginClientAssembler {
         return new LoginClient(
                 uuidSupplier.get().toString(),
                 "LOGIN",
+                user.getDisplayName(),
                 user.getId(),
                 user.getTimeOfCreation(),
                 user.getUsername(),

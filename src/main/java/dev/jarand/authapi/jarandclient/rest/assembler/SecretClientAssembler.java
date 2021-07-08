@@ -27,6 +27,7 @@ public class SecretClientAssembler {
         return new SecretClient(
                 resource.getClientId(),
                 "SECRET",
+                resource.getDisplayName(),
                 ownerId,
                 instantSupplier.get(),
                 passwordEncoder.encode(resource.getClientSecret()));
@@ -36,6 +37,7 @@ public class SecretClientAssembler {
         return new SecretClient(
                 uuidSupplier.get().toString(),
                 "SECRET",
+                user.getDisplayName(),
                 user.getId(),
                 user.getTimeOfCreation(),
                 passwordEncoder.encode(password));

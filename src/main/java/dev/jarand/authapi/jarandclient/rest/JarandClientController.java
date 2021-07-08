@@ -36,11 +36,11 @@ public class JarandClientController {
     @PostMapping
     public ResponseEntity<?> createClient(@Valid @RequestBody CreateJarandClientResource resource) {
         final var clientId = subjectProvider.getSubject();
-        final var user = service.getClient(clientId);
-        if (user.isEmpty()) {
+        final var client = service.getClient(clientId);
+        if (client.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        final var ownerId = user.get().getOwnerId();
+        final var ownerId = client.get().getOwnerId();
         final var secretClient = assembler.assembleNew(resource, ownerId);
         service.createSecretClient(secretClient);
         return ResponseEntity.ok(resourceAssembler.assemble(secretClient));

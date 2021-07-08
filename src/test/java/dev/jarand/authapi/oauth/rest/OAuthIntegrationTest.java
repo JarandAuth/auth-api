@@ -27,8 +27,8 @@ class OAuthIntegrationTest extends ApiTest {
 
     @BeforeEach
     void setup() {
-        final var secretClient = new SecretClient("someSecretClientId", "SECRET", UUID.randomUUID(), Instant.now(), "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2");
-        final var loginClient = new LoginClient("someLoginClientId", "LOGIN", UUID.randomUUID(), Instant.now(), "someUsername", "$2a$10$Jhe7o8MxZeDMFlNTpxqH4uOXzyeuvbNIkDtTRPpcMBPjGdoLWv.MS");
+        final var secretClient = new SecretClient("someSecretClientId", "SECRET", "someDisplayName", UUID.randomUUID(), Instant.now(), "$2a$10$muVmI2xf6IZUJvff8y8ui.rABX5/ivRxi3KttNdXKB6Orw57U8VW2");
+        final var loginClient = new LoginClient("someLoginClientId", "LOGIN", "someDisplayName", UUID.randomUUID(), Instant.now(), "someUsername", "$2a$10$Jhe7o8MxZeDMFlNTpxqH4uOXzyeuvbNIkDtTRPpcMBPjGdoLWv.MS");
         when(jarandClientRepository.getClient("someSecretClientId")).thenReturn(Optional.of(secretClient));
         when(jarandClientRepository.getLoginClient("someUsername")).thenReturn(Optional.of(loginClient));
         when(grantedTypeRepository.get(any(), any())).thenReturn(Optional.of(mock(GrantedType.class)));

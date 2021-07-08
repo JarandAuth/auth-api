@@ -28,6 +28,7 @@ public class JarandClientResourceAssembler {
                 final var secretClient = (SecretClient) client;
                 return new JarandClientResource(
                         secretClient.getClientId(),
+                        secretClient.getDisplayName(),
                         secretClient.getOwnerId().toString(),
                         secretClient.getTimeOfCreation().toString(),
                         secretClient.getClientSecret(),
@@ -39,6 +40,7 @@ public class JarandClientResourceAssembler {
                 final var loginClient = (LoginClient) client;
                 return new JarandClientResource(
                         loginClient.getClientId(),
+                        loginClient.getDisplayName(),
                         loginClient.getOwnerId().toString(),
                         loginClient.getTimeOfCreation().toString(),
                         null,

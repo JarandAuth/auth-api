@@ -8,8 +8,8 @@ public class LoginClient extends JarandClient {
     private final String username;
     private final String password;
 
-    public LoginClient(String clientId, String type, UUID ownerId, Instant timeOfCreation, String username, String password) {
-        super(clientId, type, ownerId, timeOfCreation);
+    public LoginClient(String clientId, String type, String displayName, UUID ownerId, Instant timeOfCreation, String username, String password) {
+        super(clientId, type, displayName, ownerId, timeOfCreation);
         this.username = username;
         this.password = password;
     }

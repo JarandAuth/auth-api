@@ -11,6 +11,7 @@ CREATE TABLE jarand_client
 (
     client_id        VARCHAR PRIMARY KEY,
     type             VARCHAR NOT NULL,
+    display_name     VARCHAR NOT NULL,
     owner_id         UUID    NOT NULL REFERENCES jarand_user (id),
     time_of_creation VARCHAR NOT NULL,
     client_secret    VARCHAR UNIQUE,

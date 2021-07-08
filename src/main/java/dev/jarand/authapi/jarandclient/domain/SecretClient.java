@@ -7,8 +7,8 @@ public class SecretClient extends JarandClient {
 
     private final String clientSecret;
 
-    public SecretClient(String clientId, String type, UUID ownerId, Instant timeOfCreation, String clientSecret) {
-        super(clientId, type, ownerId, timeOfCreation);
+    public SecretClient(String clientId, String type, String displayName, UUID ownerId, Instant timeOfCreation, String clientSecret) {
+        super(clientId, type, displayName, ownerId, timeOfCreation);
         this.clientSecret = clientSecret;
     }
 
