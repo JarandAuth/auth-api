@@ -24,6 +24,13 @@ public class ScopeService {
         return repository.getScopes();
     }
 
+    public List<Scope> getScopes(List<String> scopeIds) {
+        if (scopeIds.isEmpty()) {
+            return List.of();
+        }
+        return repository.getScopes(scopeIds);
+    }
+
     public Optional<Scope> getScope(String id) {
         return repository.getScope(id);
     }

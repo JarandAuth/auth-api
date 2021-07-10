@@ -33,6 +33,13 @@ public class ScopeRepository {
         return jdbcTemplate.query("SELECT id, description, time_of_creation FROM scope", this::mapRow);
     }
 
+    public List<Scope> getScopes(List<String> scopeIds) {
+        return jdbcTemplate.query(
+                "SELECT id, description, time_of_creation FROM scope WHERE id IN (:scopeIds)",
+                new MapSqlParameterSource("scopeIds", scopeIds),
+                this::mapRow);
+    }
+
     public Optional<Scope> getScope(String id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
